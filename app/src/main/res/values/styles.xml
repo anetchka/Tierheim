@@ -28,7 +28,7 @@
     <!-- Style for Spinner in Editor Mode -->
     <style name="SpinnerEditModeStyle">
         <item name="android:layout_column">2</item>
-        <item name="android:layout_gravity">left|center</item>
+        <item name="android:layout_gravity">fill</item>
         <item name="android:spinnerMode">dropdown</item>
     </style>
 

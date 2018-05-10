@@ -61,7 +61,7 @@ android:layout_height="match_parent">
     <EditText
         style="@style/EditTextEditModeStyle"
         android:id="@+id/weightEditText"
-        android:hint="Measurment"
+        android:hint="Gewicht"
         android:layout_row="3"
         android:inputType="number" />
 
