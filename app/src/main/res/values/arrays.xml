@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <!-- Options for gender Spinner -->
+    <string-array name="array_gender">
+        <item>@string/unknown_spinner</item>
+        <item>@string/male_spinner</item>
+        <item>@string/female_spinner</item>
+    </string-array>
+
+    <!-- Options for pet type Spinner -->
+    <string-array name="array_pet_type">
+        <item>@string/dog_spinner</item>
+        <item>@string/cat_spinner</item>
+        <item>@string/parrot_spinner</item>
+    </string-array>
+</resources>
