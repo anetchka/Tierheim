@@ -30,7 +30,7 @@ public class TierheimDB extends SQLiteOpenHelper {
                 + Tier.TierItem._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + Tier.TierItem.COLUMN_PET_NAME + " TEXT NOT NULL, "
                 + Tier.TierItem.COLUMN_PET_TYPE + " INTEGER NOT NULL, "
-              //  + Tier.TierItem.COLUMN_PICTURE + " BLOB,  "
+                + Tier.TierItem.COLUMN_PICTURE + " BLOB,  "
                 + Tier.TierItem.COLUMN_PET_BREED + " TEXT, "
                 + Tier.TierItem.COLUMN_PET_GENDER + " INTEGER NOT NULL, "
                 + Tier.TierItem.COLUMN_PET_WEIGHT + " INTEGER NOT NULL DEFAULT 0);";

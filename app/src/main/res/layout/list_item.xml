@@ -28,7 +28,7 @@
 
         <TextView
             style="@style/ListItemTextViewStyle"
-            android:id="@+id/petTypeListItem"
+            android:id="@+id/breedTVInListItem"
             android:gravity="top" />
     </LinearLayout>
 

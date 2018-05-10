@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         String[] projection = {
                 Tier.TierItem._ID,
                 Tier.TierItem.COLUMN_PET_NAME,
-                Tier.TierItem.COLUMN_PET_TYPE};
+                Tier.TierItem.COLUMN_PET_BREED,
+                Tier.TierItem.COLUMN_PICTURE};
         return new CursorLoader(this, Tier.TierItem.CONTENT_URI, projection, null, null, null);
     }
 

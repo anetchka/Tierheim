@@ -4,6 +4,8 @@ import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,7 +19,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+
+import java.io.ByteArrayOutputStream;
 
 import ua.kiev.homes.anna.tierheim.database.Tier;
 
@@ -27,6 +32,11 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
      * EditText field to enter the pet's name
      */
     private EditText mNameEditText;
+
+    /**
+     * Image for the pet
+     */
+    private ImageView mPetImageView;
 
     private Uri petUri;
 
@@ -65,12 +75,15 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editor_mode);
 
+        this.setTitle("Tier hinzufügen");
+
         // Find all relevant views that we will need to read user input from
         mNameEditText = (EditText) findViewById(R.id.nameEditText);
         mBreedEditText = (EditText) findViewById(R.id.breedEditText);
         mWeightEditText = (EditText) findViewById(R.id.weightEditText);
         mGenderSpinner = (Spinner) findViewById(R.id.genderSpinner);
         mPetTypeSpinner = (Spinner) findViewById(R.id.petTypeSpinner);
+        mPetImageView = (ImageView) findViewById(R.id.defaultPetImageView);
         Button savePet = (Button) findViewById(R.id.save_pet_button);
         savePet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,10 +117,16 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
                 if (!TextUtils.isEmpty(selection)) {
                     if (selection.equals(getString(R.string.dog_spinner))) {
                         mPetType = Tier.TierItem.TYPE_DOG;
+                        //set default image for dog
+                        mPetImageView.setImageResource(R.drawable.ic_dog_default);
                     } else if (selection.equals(getString(R.string.cat_spinner))) {
                         mPetType = Tier.TierItem.TYPE_CAT;
+                        //set default image for cat
+                        mPetImageView.setImageResource(R.drawable.ic_cat_default);
                     } else {
                         mPetType = Tier.TierItem.TYPE_PARROT;
+                        //set default image for parrot
+                        mPetImageView.setImageResource(R.drawable.ic_parrot_default);
                     }
                 }
             }
@@ -192,6 +211,19 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
      */
     private void savePet() {
         ContentValues values = new ContentValues();
+        //Convert image to bitmap
+        Bitmap bitmap;
+        if (mPetType == Tier.TierItem.TYPE_DOG) {
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_dog_default);
+        } else if (mPetType == Tier.TierItem.TYPE_CAT) {
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_cat_default);
+        } else {
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_parrot_default);
+        }
+        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+        byte[] image =bos.toByteArray();
+
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
         String nameString = mNameEditText.getText().toString().trim();
@@ -205,7 +237,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         values.put(Tier.TierItem.COLUMN_PET_GENDER, mGender);
         values.put(Tier.TierItem.COLUMN_PET_WEIGHT, weight);
         values.put(Tier.TierItem.COLUMN_PET_TYPE, mPetType);
-        //values.put(Tier.TierItem.COLUMN_PICTURE, "");
+        values.put(Tier.TierItem.COLUMN_PICTURE, image);
 
         Uri uriForInsertedPet = getContentResolver().insert(Tier.TierItem.CONTENT_URI, values);
 

@@ -2,10 +2,13 @@ package ua.kiev.homes.anna.tierheim;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import ua.kiev.homes.anna.tierheim.database.Tier;
@@ -54,12 +57,19 @@ public class TierCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView nameTV = (TextView) view.findViewById(R.id.petNameTVInListItem);
-        TextView petTypeTV = (TextView) view.findViewById(R.id.petTypeListItem);
+        TextView petBreed = (TextView) view.findViewById(R.id.breedTVInListItem);
+        //retrieve image from database
+        ImageView petPictureIV = (ImageView) view.findViewById(R.id.imageIdInListItem);
+        byte[] image = cursor.getBlob(cursor.getColumnIndex(Tier.TierItem.COLUMN_PICTURE));
+        Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
 
         String petName = cursor.getString(cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_NAME));
+        String breed = cursor.getString(cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_BREED));;
+        /**
         cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_TYPE);
         int petTypeAsInteger = cursor.getInt(cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_TYPE));
         String petTypeAsString = "";
+
         switch (petTypeAsInteger) {
             case 0:
                 petTypeAsString = myContext.getResources().getString(R.string.dog_spinner);
@@ -73,8 +83,9 @@ public class TierCursorAdapter extends CursorAdapter {
             default:
                 petTypeAsString = myContext.getResources().getString(R.string.dog_spinner);
         }
-
+**/
         nameTV.setText(petName);
-        petTypeTV.setText(petTypeAsString);
+        petBreed.setText(breed);
+        petPictureIV.setImageBitmap(bitmap);
     }
 }
