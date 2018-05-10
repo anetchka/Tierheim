@@ -102,9 +102,9 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selection = (String) parent.getItemAtPosition(position);
                 if (!TextUtils.isEmpty(selection)) {
-                    if (selection.equals("Dog")) {
+                    if (selection.equals(getString(R.string.dog_spinner))) {
                         mPetType = Tier.TierItem.TYPE_DOG;
-                    } else if (selection.equals("Cat")) {
+                    } else if (selection.equals(getString(R.string.cat_spinner))) {
                         mPetType = Tier.TierItem.TYPE_CAT;
                     } else {
                         mPetType = Tier.TierItem.TYPE_PARROT;
@@ -135,9 +135,9 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selection = (String) parent.getItemAtPosition(position);
                 if (!TextUtils.isEmpty(selection)) {
-                    if (selection.equals("Male")) {
+                    if (selection.equals(getString(R.string.male_spinner))) {
                         mGender = Tier.TierItem.GENDER_MALE;
-                    } else if (selection.equals("Female")) {
+                    } else if (selection.equals(R.string.female_spinner)) {
                         mGender = Tier.TierItem.GENDER_FEMALE;
                     } else {
                         mGender = Tier.TierItem.GENDER_UNKNOWN;

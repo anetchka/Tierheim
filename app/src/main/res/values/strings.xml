@@ -2,30 +2,48 @@
     <string name="app_name">Tierheim</string>
 
     <!-- Label for name TextView -->
-    <string name="nameTextView">Pet Name</string>
+    <string name="nameTextView">Tier Name</string>
 
     <!-- Label for breed TextView -->
-    <string name="breedTextView">Breed</string>
+    <string name="breedTextView">Rasse</string>
 
     <!-- Label for weight TextView -->
-    <string name="weightTextView">Weight in kg</string>
+    <string name="weightTextView">Gewicht in kg</string>
 
     <!-- Label for pet Type TextView -->
-    <string name="petTypeTextView">Pet Type</string>
+    <string name="petTypeTextView">Tiertyp</string>
 
     <!-- Label for pet gender TextView -->
-    <string name="genderTextView">Gender</string>
+    <string name="genderTextView">Geschlecht</string>
 
     <!-- Title text for the empty view, which describes the empty dog house image  -->
     <string name="empty_view_title_text">Das Tierheim ist leer. \nFüge die Tiere hinzu</string>
 
     <!-- Title for a delete item in a menu -->
-    <string name="delete_item">Delete Pet</string>
+    <string name="delete_item">Tier Löschen</string>
 
     <!-- Title for a save item in a menu -->
-    <string name="save_item">Save Pet</string>
+    <string name="save_item">Tier speichern</string>
 
     <!-- Title for a picture item in a menu -->
-    <string name="change_picture">Change Profile Picture</string>
+    <string name="change_picture">Photo wechseln</string>
+
+    <!-- Title for spinner choice dog -->
+    <string name="dog_spinner">Hund</string>
+
+    <!-- Title for spinner choice cat -->
+    <string name="cat_spinner">Katze</string>
+
+    <!-- Title for spinner choice dog -->
+    <string name="parrot_spinner">Papagei</string>
+
+    <!-- Title for spinner choice gender male -->
+    <string name="male_spinner">Männlich</string>
+
+    <!-- Title for spinner choice gender female -->
+    <string name="female_spinner">Weiblich</string>
+
+    <!-- Title for spinner choice unknown gender -->
+    <string name="unknown_spinner">Unbekannt</string>
 
 </resources>

@@ -13,6 +13,8 @@ import ua.kiev.homes.anna.tierheim.database.Tier;
 public class TierCursorAdapter extends CursorAdapter {
 
 
+    private Context myContext;
+
     /**
      * Constructs a new {@link TierCursorAdapter}.
      *
@@ -20,7 +22,9 @@ public class TierCursorAdapter extends CursorAdapter {
      * @param c       The cursor from which to get the data.
      */
     public TierCursorAdapter(Context context, Cursor c) {
+
         super(context, c, 0 /* flags */);
+        myContext = context;
     }
 
     /**
@@ -50,12 +54,27 @@ public class TierCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView nameTV = (TextView) view.findViewById(R.id.petNameTVInListItem);
-       // TextView petTypeTV = (TextView) view.findViewById(R.id.petTypeTVInListItem);
+        TextView petTypeTV = (TextView) view.findViewById(R.id.petTypeListItem);
 
         String petName = cursor.getString(cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_NAME));
-    //    String petType = cursor.getString(cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_TYPE));
+        cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_TYPE);
+        int petTypeAsInteger = cursor.getInt(cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_TYPE));
+        String petTypeAsString = "";
+        switch (petTypeAsInteger) {
+            case 0:
+                petTypeAsString = myContext.getResources().getString(R.string.dog_spinner);
+                break;
+            case 1:
+                petTypeAsString = myContext.getResources().getString(R.string.cat_spinner);
+                break;
+            case 2:
+                petTypeAsString = myContext.getResources().getString(R.string.parrot_spinner);
+                break;
+            default:
+                petTypeAsString = myContext.getResources().getString(R.string.dog_spinner);
+        }
 
         nameTV.setText(petName);
-     //   petTypeTV.setText(petType);
+        petTypeTV.setText(petTypeAsString);
     }
 }
