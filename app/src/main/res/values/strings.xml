@@ -16,10 +16,16 @@
     <!-- Label for pet gender TextView -->
     <string name="genderTextView">Gender</string>
 
-    <!-- Title text for the empty view, which describes the empty dog house image [CHAR LIMIT=50] -->
+    <!-- Title text for the empty view, which describes the empty dog house image  -->
     <string name="empty_view_title_text">Das Tierheim ist leer. \nFüge die Tiere hinzu</string>
 
-    <!-- Subtitle text for the empty view that prompts the user to add a pet [CHAR LIMIT=50] -->
-    <string name="empty_view_subtitle_text">Get started by adding a pet</string>
+    <!-- Title for a delete item in a menu -->
+    <string name="delete_item">Delete Pet</string>
+
+    <!-- Title for a save item in a menu -->
+    <string name="save_item">Save Pet</string>
+
+    <!-- Title for a picture item in a menu -->
+    <string name="change_picture">Change Profile Picture</string>
 
 </resources>
