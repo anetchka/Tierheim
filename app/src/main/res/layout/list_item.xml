@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/imageIdInListItem"
-        android:src = "@drawable/ic_pet_default"
+        android:src = "@drawable/ic_dog_default"
         android:layout_width="@dimen/list_item_height"
         android:layout_height="@dimen/list_item_height"/>
 

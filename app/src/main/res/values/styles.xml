@@ -40,4 +40,18 @@
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
     </style>
 
+    <!-- Style for ImageView and Button in activity_main -->
+    <style name="ImageAndButtonMainActivityStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+    </style>
+
+    <!-- Style for ImageView and Button in Editor Mode -->
+    <style name="ImageAndButtonEditorModeStyle">
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+    </style>
+
 </resources>
