@@ -6,6 +6,15 @@ import android.provider.BaseColumns;
 
 public class Tier {
 
+    //For Uri content authority part
+    public static final String CONTENT_AUTHORITY = "ua.kiev.homes.anna.tierheim";
+
+    //Consists of "content://ua.kiev.homes.anna.tierheim"
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+
+    //table name
+    public static final String PATH_PETS = "tiere";
+
     // To prevent someone from accidentally instantiating the contract class,
     // give it an empty constructor.
     private Tier() {}
@@ -15,6 +24,21 @@ public class Tier {
      * Each entry in the table represents a single pet.
      */
     public static final class TierItem implements BaseColumns {
+
+        /**
+         * The MIME type of the {@link #CONTENT_URI} for a list of pets.
+         */
+        public static final String CONTENT_LIST_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PETS;
+
+        /**
+         * The MIME type of the {@link #CONTENT_URI} for a single pet.
+         */
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PETS;
+
+        //the complete Uri with the table name at the end: content://com.example.android.pets/pets
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PETS);
 
         /** Name of database table for pets */
         public final static String TABLE_NAME = "tiere";
@@ -95,7 +119,7 @@ public class Tier {
             return false;
         }
 
-        public static boolean isValidtTyPE(int type) {
+        public static boolean isValidtType(int type) {
             if (type == TYPE_DOG || type == TYPE_CAT || type == TYPE_PARROT) {
                 return true;
             }
