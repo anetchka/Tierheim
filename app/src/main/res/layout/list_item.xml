@@ -14,7 +14,7 @@
         android:layout_height="@dimen/list_item_height"/>
 
     <LinearLayout
-        android:id="@+id/nameTVInListItem"
+        android:id="@+id/list_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -22,13 +22,13 @@
 
         <TextView
             style="@style/ListItemTextViewStyle"
-            android:id="@+id/petTypeTVInListItem"
+            android:id="@+id/petNameTVInListItem"
             android:gravity="bottom"
             android:textStyle="bold"/>
 
         <TextView
             style="@style/ListItemTextViewStyle"
-            android:id="@+id/default_text_view"
+            android:id="@+id/petTypeListItem"
             android:gravity="top" />
     </LinearLayout>
 

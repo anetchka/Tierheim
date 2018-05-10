@@ -89,7 +89,7 @@ public class Tier {
          *
          * Type: INTEGER
          */
-        public final static String COLUMN_PET_Type = "type";
+        public final static String COLUMN_PET_TYPE = "type";
 
         /**
          * Possible values for the gender of the pet.

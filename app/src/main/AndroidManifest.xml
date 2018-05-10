@@ -20,6 +20,10 @@
         <activity android:name=".EditorMode">
 
         </activity>
+        <provider
+            android:name=".database.TierProvider"
+            android:authorities="ua.kiev.homes.anna.tierheim"
+            android:exported="false" />
     </application>
 
 </manifest>

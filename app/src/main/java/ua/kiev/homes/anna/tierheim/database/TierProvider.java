@@ -69,6 +69,7 @@ public class TierProvider extends ContentProvider {
                 throw new IllegalArgumentException("Cannot query with the uri" + uri);
         }
 
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
@@ -81,7 +82,14 @@ public class TierProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+        int match = sUriMatcher.match(uri);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Long insertedID = db.insertOrThrow(Tier.TierItem.TABLE_NAME, null, values);
+
+        //notify all listeners that data has been changed
+        getContext().getContentResolver().notifyChange(uri, null);
+        return ContentUris.withAppendedId(uri, insertedID);
     }
 
     @Override

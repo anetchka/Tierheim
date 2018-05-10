@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 startActivity(intent);
             }
         });
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -62,8 +63,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // you will actually use after this query.
         String[] projection = {
                 Tier.TierItem._ID,
-                Tier.TierItem.COLUMN_PET_NAME,
-                Tier.TierItem.COLUMN_PET_Type};
+                Tier.TierItem.COLUMN_PET_NAME};
+            //    Tier.TierItem.COLUMN_PET_TYPE};
         return new CursorLoader(this, Tier.TierItem.CONTENT_URI, projection, null, null, null);
     }
 

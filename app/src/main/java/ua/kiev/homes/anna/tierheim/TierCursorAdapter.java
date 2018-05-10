@@ -2,7 +2,6 @@ package ua.kiev.homes.anna.tierheim;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,13 +49,13 @@ public class TierCursorAdapter extends CursorAdapter {
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView nameTV = (TextView) view.findViewById(R.id.nameTVInListItem);
-        TextView petTypeTV = (TextView) view.findViewById(R.id.petTypeTVInListItem);
+        TextView nameTV = (TextView) view.findViewById(R.id.petNameTVInListItem);
+       // TextView petTypeTV = (TextView) view.findViewById(R.id.petTypeTVInListItem);
 
         String petName = cursor.getString(cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_NAME));
-        String petType = cursor.getString(cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_Type));
+    //    String petType = cursor.getString(cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_TYPE));
 
         nameTV.setText(petName);
-        petTypeTV.setText(petType);
+     //   petTypeTV.setText(petType);
     }
 }
