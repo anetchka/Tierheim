@@ -1,0 +1,43 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    
+    <!-- Style for TextView in Editor Mode -->
+    <style name="TextViewEditModeStyle">
+        <item name="android:layout_column">1</item>
+        <item name="android:layout_gravity">fill</item>
+        <item name="android:layout_margin">20dp</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+
+    <!-- Style for EditText in Editor Mode -->
+    <style name="EditTextEditModeStyle">
+        <item name="android:layout_column">2</item>
+        <item name="android:layout_gravity">fill</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+    </style>
+
+    <!-- Style for Spinner in Editor Mode -->
+    <style name="SpinnerEditModeStyle">
+        <item name="android:layout_column">2</item>
+        <item name="android:layout_gravity">left|center</item>
+        <item name="android:spinnerMode">dropdown</item>
+    </style>
+
+    <!-- Style for TextView in ListItem -->
+    <style name="ListItemTextViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+    </style>
+
+</resources>

@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Tierheim</string>
+
+    <!-- Label for name TextView -->
+    <string name="nameTextView">Pet Name</string>
+
+    <!-- Label for breed TextView -->
+    <string name="breedTextView">Breed</string>
+
+    <!-- Label for weight TextView -->
+    <string name="weightTextView">Weight in kg</string>
+
+    <!-- Label for pet Type TextView -->
+    <string name="petTypeTextView">Pet Type</string>
+
+    <!-- Label for pet gender TextView -->
+    <string name="genderTextView">Gender</string>
+
+    <!-- Title text for the empty view, which describes the empty dog house image [CHAR LIMIT=50] -->
+    <string name="empty_view_title_text">Das Tierheim ist leer. \nFüge die Tiere hinzu</string>
+
+    <!-- Subtitle text for the empty view that prompts the user to add a pet [CHAR LIMIT=50] -->
+    <string name="empty_view_subtitle_text">Get started by adding a pet</string>
+
+</resources>
