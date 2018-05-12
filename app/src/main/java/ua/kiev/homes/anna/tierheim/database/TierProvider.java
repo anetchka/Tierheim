@@ -84,6 +84,7 @@ public class TierProvider extends ContentProvider {
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
         int match = sUriMatcher.match(uri);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        //check if
 
         Long insertedID = db.insertOrThrow(Tier.TierItem.TABLE_NAME, null, values);
 
@@ -94,11 +95,51 @@ public class TierProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        int numberDeletedRows = -1;
+        //get writable DB
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        //if URI for all pets
+        if (match == ALL_PETS) {
+            numberDeletedRows = db.delete(Tier.TierItem.TABLE_NAME, selection, selectionArgs);
+            //if uri is for one pet only
+        } else if (match == ONE_PET) {
+            selection = Tier.TierItem._ID + "=?";
+            //get ID of the pet
+            selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
+            numberDeletedRows = getContext().getContentResolver().delete(uri, selection, selectionArgs);
+        } else {
+            throw new IllegalArgumentException("Deletion is not supported for " + uri);
+        }
+        //if deletion was successful then notify content resolver
+        if (numberDeletedRows != -1) {
+            db.delete(Tier.TierItem.TABLE_NAME, selection, selectionArgs);
+        }
+        return numberDeletedRows;
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        int numberUpdatedRows = -1;
+        //get writable DB
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        //if URI for all pets
+        if (match == ALL_PETS) {
+            numberUpdatedRows = db.update(Tier.TierItem.TABLE_NAME, values, selection, selectionArgs);
+            //if uri is for one pet only
+        } else if (match == ONE_PET) {
+            selection = Tier.TierItem._ID + "=?";
+            //get ID of the pet
+            selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
+            numberUpdatedRows = db.update(Tier.TierItem.TABLE_NAME, values, selection, selectionArgs);
+        } else {
+            throw new IllegalArgumentException("Deletion is not supported for " + uri);
+        }
+        //if deletion was successful then notify content resolver
+        if (numberUpdatedRows != -1) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return numberUpdatedRows;
     }
 }

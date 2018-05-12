@@ -15,9 +15,6 @@ import ua.kiev.homes.anna.tierheim.database.Tier;
 
 public class TierCursorAdapter extends CursorAdapter {
 
-
-    private Context myContext;
-
     /**
      * Constructs a new {@link TierCursorAdapter}.
      *
@@ -27,7 +24,6 @@ public class TierCursorAdapter extends CursorAdapter {
     public TierCursorAdapter(Context context, Cursor c) {
 
         super(context, c, 0 /* flags */);
-        myContext = context;
     }
 
     /**

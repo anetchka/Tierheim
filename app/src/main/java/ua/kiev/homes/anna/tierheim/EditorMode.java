@@ -1,7 +1,10 @@
 package ua.kiev.homes.anna.tierheim;
 
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -75,8 +78,6 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editor_mode);
 
-        this.setTitle("Tier hinzufügen");
-
         // Find all relevant views that we will need to read user input from
         mNameEditText = (EditText) findViewById(R.id.nameEditText);
         mBreedEditText = (EditText) findViewById(R.id.breedEditText);
@@ -96,8 +97,18 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         setUpGenderSpinner();
 
         setUpPetTypeSpinner();
-
-        getLoaderManager().initLoader(0, null, this);
+        Intent intent = getIntent();
+        //get uri from the intent
+        petUri = intent.getData();
+        if (petUri == null) {
+            this.setTitle(getString(R.string.save_item));
+            // Invalidate the options menu, so the "Delete" menu option can be hidden.
+            // (It doesn't make sense to delete a pet that hasn't been created yet.)
+        } else {
+            this.setTitle(getString(R.string.edit_pet));
+            //initiate the Loader
+            getLoaderManager().initLoader(0, null, this);
+        }
     }
 
     //Set Up Spinner to choose pet Type
@@ -239,13 +250,29 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         values.put(Tier.TierItem.COLUMN_PET_TYPE, mPetType);
         values.put(Tier.TierItem.COLUMN_PICTURE, image);
 
-        Uri uriForInsertedPet = getContentResolver().insert(Tier.TierItem.CONTENT_URI, values);
+        //if insert pet
+        if (petUri == null) {
+            Uri uriForInsertedPet = getContentResolver().insert(Tier.TierItem.CONTENT_URI, values);
+        } else {
+            int rowsUpdated = -1;
+            rowsUpdated = getContentResolver().update(petUri, values, null, null);
+        }
+
+
 
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
+        String[] projection = {
+                Tier.TierItem._ID,
+                Tier.TierItem.COLUMN_PET_NAME,
+                Tier.TierItem.COLUMN_PET_BREED,
+                Tier.TierItem.COLUMN_PET_GENDER,
+                Tier.TierItem.COLUMN_PET_WEIGHT,
+                Tier.TierItem.COLUMN_PET_TYPE,
+                Tier.TierItem.COLUMN_PICTURE};
+        return new CursorLoader(this, ContentUris.withAppendedId(Tier.TierItem.CONTENT_URI, ContentUris.parseId(petUri)), projection, null, null, null);
     }
 
     @Override
@@ -257,11 +284,15 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             int petWeight = data.getInt(data.getColumnIndex(Tier.TierItem.COLUMN_PET_WEIGHT));
             int petGender = data.getInt(data.getColumnIndex(Tier.TierItem.COLUMN_PET_GENDER));
             int petType = data.getInt(data.getColumnIndex(Tier.TierItem.COLUMN_PET_TYPE));
+            //get Image from Database
+            byte[] image = data.getBlob(data.getColumnIndex(Tier.TierItem.COLUMN_PICTURE));
+            Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
 
             //populate the values into the TextViews
             mNameEditText.setText(petName);
             mBreedEditText.setText(petBreed);
             mWeightEditText.setText(String.valueOf(petWeight));
+            mPetImageView.setImageBitmap(bitmap);
             switch (petGender) {
                 case 0:
                     mGenderSpinner.setSelection(0);

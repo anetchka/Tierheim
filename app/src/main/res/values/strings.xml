@@ -22,6 +22,9 @@
     <!-- Title for a delete item in a menu -->
     <string name="delete_item">Tier Löschen</string>
 
+    <!-- Title for a delete item in a menu -->
+    <string name="edit_pet">Tier Bearbeiten</string>
+
     <!-- Title for a save item in a menu -->
     <string name="save_item">Tier speichern</string>
 
