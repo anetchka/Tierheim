@@ -107,13 +107,13 @@ public class TierProvider extends ContentProvider {
             selection = Tier.TierItem._ID + "=?";
             //get ID of the pet
             selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
-            numberDeletedRows = getContext().getContentResolver().delete(uri, selection, selectionArgs);
+            numberDeletedRows = db.delete(Tier.TierItem.TABLE_NAME, selection, selectionArgs);
         } else {
             throw new IllegalArgumentException("Deletion is not supported for " + uri);
         }
         //if deletion was successful then notify content resolver
         if (numberDeletedRows != -1) {
-            db.delete(Tier.TierItem.TABLE_NAME, selection, selectionArgs);
+            getContext().getContentResolver().notifyChange(uri, null);
         }
         return numberDeletedRows;
     }

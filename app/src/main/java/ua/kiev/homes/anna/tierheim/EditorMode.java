@@ -208,13 +208,18 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
                // finish();
                 return true;
             case R.id.delete:
-                //deletePet();
+                deletePet();
+                finish();
                 return true;
             case R.id.changePicture:
                 //changeProfilePicture();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deletePet() {
+        getContentResolver().delete(petUri, null, null);
     }
 
     /**
