@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -208,11 +209,22 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
                 finish();
                 return true;
             case R.id.changePicture:
-                //changeProfilePicture();
+                changeProfilePicture();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * Start camera Intent
+     */
+    private void changeProfilePicture() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, 100);
+        }
+    }
+
 
     private void deletePet() {
         getContentResolver().delete(petUri, null, null);
