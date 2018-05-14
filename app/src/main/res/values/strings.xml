@@ -29,7 +29,7 @@
     <string name="save_item">Tier speichern</string>
 
     <!-- Title for a picture item in a menu -->
-    <string name="change_picture">Photo wechseln</string>
+    <string name="change_picture">Profilbild wechseln</string>
 
     <!-- Title for spinner choice dog -->
     <string name="dog_spinner">Hund</string>

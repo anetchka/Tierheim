@@ -203,10 +203,6 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     public boolean onOptionsItemSelected(MenuItem item) {
         int selectedItem = item.getItemId();
         switch (selectedItem) {
-            case R.id.save:
-               // savePet();
-               // finish();
-                return true;
             case R.id.delete:
                 deletePet();
                 finish();
