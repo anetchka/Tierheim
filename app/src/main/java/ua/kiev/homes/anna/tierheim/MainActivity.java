@@ -6,6 +6,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 
 import ua.kiev.homes.anna.tierheim.database.Tier;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private TierCursorAdapter tierAdapter;
 
@@ -33,8 +34,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     //a list for ids of chosen items
     private ArrayList<Long> item_list = new ArrayList<Long>();
 
+    private ArrayList<Integer> item_positioon = new ArrayList<Integer>();
+
     //List view where the pets are populated
-    private  ListView petListView;
+    private ListView petListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 //set uri for the chosen pet and set it in intent data
                 intent.setData(ContentUris.withAppendedId(Tier.TierItem.CONTENT_URI, id));
                 startActivity(intent);
+
             }
         });
         //set up a mode for multiple items to be chosen from the listView
@@ -77,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         petListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+
                 checkedCount = petListView.getCheckedItemCount();
                 //if more than one item selected set the appropriate title
                 if (checkedCount > 1) {
@@ -84,11 +89,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 } else {
                     mode.setTitle(checkedCount + " item selected");
                 }
-                mode.setTitle(checkedCount + " item selected");
-                if(checked) {
+                if (checked) {
                     item_list.add(id);
+                    item_positioon.add(position);
+                    petListView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorItemSelected));
                 } else {
                     item_list.remove(id);
+                    petListView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorItemSelected));
                 }
             }
 
@@ -98,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 inflater.inflate(R.menu.menu_editor_mode, menu);
                 //set invisible all except for 'Tier Löschen' menu item
                 for (int i = 0; i < menu.size(); i++) {
-                    if (menu.getItem(i).getTitle().equals(getString(R.string.delete_item)) ) {
+                    if (menu.getItem(i).getTitle().equals(getString(R.string.delete_item))) {
                         continue;
                     }
                     menu.getItem(i).setVisible(false);
@@ -113,9 +120,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                final int deleteSize = item_list.size();
-                int itemId = item.getItemId();
-                if(itemId == R.id.delete) {
+                if (item.getItemId() == R.id.delete) {
                     for (Long id : item_list) {
                         String whereDeleteID = Tier.TierItem._ID + "=" + id;
                         int result = getContentResolver().delete(Tier.TierItem.CONTENT_URI, whereDeleteID, null);
@@ -123,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             Log.i("From MainActivity", "Delete failed for id " + id);
                         }
                     }
-
                 }
                 checkedCount = 0;
                 item_list.clear();
@@ -133,8 +137,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
+                for (Integer position : item_positioon) {
+                    //set the color back to unselected
+                    petListView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorItemNotSelected));
+                }
+
                 return;
             }
+
         });
         getLoaderManager().initLoader(0, null, this);
     }
@@ -160,5 +170,4 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoaderReset(Loader<Cursor> loader) {
         tierAdapter.swapCursor(null);
     }
-
 }
