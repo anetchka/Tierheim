@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import ua.kiev.homes.anna.tierheim.database.Tier;
 
@@ -31,10 +32,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     //counter for the chosen items from the ListView
     private int checkedCount;
 
-    //a list for ids of chosen items
-    private ArrayList<Long> item_list = new ArrayList<Long>();
-
-    private ArrayList<Integer> item_positioon = new ArrayList<Integer>();
+    //a HashMap for ids and positions of chosen items
+    private HashMap<Long, Integer> itemMap = new HashMap<Long, Integer>();
 
     //List view where the pets are populated
     private ListView petListView;
@@ -90,11 +89,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     mode.setTitle(checkedCount + " item selected");
                 }
                 if (checked) {
-                    item_list.add(id);
-                    item_positioon.add(position);
+                    itemMap.put(id, position);
                     petListView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorItemSelected));
                 } else {
-                    item_list.remove(id);
+                    itemMap.remove(id);
                     petListView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorItemSelected));
                 }
             }
@@ -121,28 +119,27 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 if (item.getItemId() == R.id.delete) {
-                    for (Long id : item_list) {
+                    for (Long id : itemMap.keySet()) {
                         String whereDeleteID = Tier.TierItem._ID + "=" + id;
                         int result = getContentResolver().delete(Tier.TierItem.CONTENT_URI, whereDeleteID, null);
+                        petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemNotSelected));
                         if (result == -1) {
                             Log.i("From MainActivity", "Delete failed for id " + id);
                         }
                     }
                 }
                 checkedCount = 0;
-                item_list.clear();
+                itemMap.clear();
                 mode.finish();
                 return true;
             }
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                for (Integer position : item_positioon) {
+                for (Integer position : itemMap.values()) {
                     //set the color back to unselected
                     petListView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorItemNotSelected));
                 }
-
-                return;
             }
 
         });
