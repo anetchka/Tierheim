@@ -270,9 +270,6 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             int rowsUpdated = -1;
             rowsUpdated = getContentResolver().update(petUri, values, null, null);
         }
-
-
-
     }
 
     @Override
