@@ -143,7 +143,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                                     Log.i("From MainActivity", "Delete failed for id " + id);
                                 }
                             }
-
+                            onDestroyActionMode(mode);
+                            mode.finish();
                         }
                     });
 
