@@ -152,6 +152,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             onDestroyActionMode(mode);
+                            itemMap.clear();
+                            checkedCount = 0;
                             mode.finish();
 
                         }
@@ -163,6 +165,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
+                if (itemMap.isEmpty()) {
+                    return;
+                }
                 for (Integer position : itemMap.values()) {
                     //set the color back to unselected
                     petListView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorItemNotSelected));
