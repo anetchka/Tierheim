@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -27,6 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -335,7 +337,13 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         String nameString = mNameEditText.getText().toString().trim();
         String breedString = mBreedEditText.getText().toString().trim();
         String weightString = mWeightEditText.getText().toString().trim();
-        int weight = Integer.parseInt(weightString);
+        int weight = 0;
+        try {
+            weight = Integer.parseInt(weightString);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, getString(R.string.empty_weight), Toast.LENGTH_SHORT).show();
+        }
+
         // Create a ContentValues object where column names are the keys,
         // and pet attributes from the editor are the values.
         values.put(Tier.TierItem.COLUMN_PET_NAME, nameString);

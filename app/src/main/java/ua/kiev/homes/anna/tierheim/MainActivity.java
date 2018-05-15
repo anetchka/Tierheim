@@ -1,8 +1,10 @@
 package ua.kiev.homes.anna.tierheim;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -17,7 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -87,9 +91,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     mode.setTitle(checkedCount + " item selected");
                 }
                 if (checked) {
+                    //add into hashmap and change the background color to gray
                     itemMap.put(id, position);
                     petListView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorItemSelected));
                 } else {
+                    //remove from hashmap and change the background color to white
                     itemMap.remove(id);
                     petListView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorItemSelected));
                 }
@@ -115,20 +121,42 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
 
             @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            public boolean onActionItemClicked(final ActionMode mode, final MenuItem item) {
+                //if the user chooses "Tier Löschen" from menu item
                 if (item.getItemId() == R.id.delete) {
-                    for (Long id : itemMap.keySet()) {
-                        String whereDeleteID = Tier.TierItem._ID + "=" + id;
-                        int result = getContentResolver().delete(Tier.TierItem.CONTENT_URI, whereDeleteID, null);
-                        petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemNotSelected));
-                        if (result == -1) {
-                            Log.i("From MainActivity", "Delete failed for id " + id);
+
+                    //create Alert Dialog
+                    AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
+
+                    adb.setTitle("Items löschen?");
+
+                    adb.setIcon(android.R.drawable.ic_dialog_alert);
+
+                    //if "OK" button is clicked, delete the items
+                    adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            for (Long id : itemMap.keySet()) {
+                                String whereDeleteID = Tier.TierItem._ID + "=" + id;
+                                int result = getContentResolver().delete(Tier.TierItem.CONTENT_URI, whereDeleteID, null);
+                                petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemNotSelected));
+                                if (result == -1) {
+                                    Log.i("From MainActivity", "Delete failed for id " + id);
+                                }
+                            }
+
                         }
-                    }
+                    });
+
+                    //if "Cancel" button is clicked
+                    adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            onDestroyActionMode(mode);
+                            mode.finish();
+
+                        }
+                    });
+                    adb.show();
                 }
-                checkedCount = 0;
-                itemMap.clear();
-                mode.finish();
                 return true;
             }
 

@@ -34,6 +34,9 @@
     <!-- Title for spinner choice dog -->
     <string name="dog_spinner">Hund</string>
 
+    <!-- If the weight EditText is empty -->
+    <string name="empty_weight">Gewicht wurde nicht eingegeben</string>
+
     <!-- Title for spinner choice cat -->
     <string name="cat_spinner">Katze</string>
 
