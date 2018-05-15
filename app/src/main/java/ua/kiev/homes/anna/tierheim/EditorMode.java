@@ -109,6 +109,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         savePet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //save pet when "Speichern" button is clicked
                 savePet();
                 finish();
             }
@@ -122,8 +123,6 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         petUri = intent.getData();
         if (petUri == null) {
             this.setTitle(getString(R.string.save_item));
-            // Invalidate the options menu, so the "Delete" menu option can be hidden.
-            // (It doesn't make sense to delete a pet that hasn't been created yet.)
         } else {
             this.setTitle(getString(R.string.edit_pet));
             //initiate the Loader
@@ -223,6 +222,16 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_editor_mode, menu);
+        //if we are in editor mode for the first time
+        if (petUri == null) {
+            //set invisible all except for 'Tier Löschen' menu item
+            for (int i = 0; i < menu.size(); i++) {
+                if (menu.getItem(i).getTitle().equals(getString(R.string.delete_item))) {
+                    menu.getItem(i).setVisible(false);
+                    break;
+                }
+            }
+        }
         return true;
     }
 
