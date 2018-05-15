@@ -44,9 +44,19 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     private EditText mNameEditText;
 
     /**
+     * a path where the picture is saved on the phone
+     */
+    private String mCurrentPhotoPath;
+
+    /**
      * Image for the pet
      */
     private ImageView mPetImageView;
+
+    /**
+     * a {@link Bitmap} Bitmap for the picture
+     */
+    private Bitmap bitmap;
 
     private Uri petUri;
 
@@ -92,6 +102,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         mGenderSpinner = (Spinner) findViewById(R.id.genderSpinner);
         mPetTypeSpinner = (Spinner) findViewById(R.id.petTypeSpinner);
         mPetImageView = (ImageView) findViewById(R.id.defaultPetImageView);
+
         Button savePet = (Button) findViewById(R.id.save_pet_button);
         savePet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,15 +147,27 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
                     if (selection.equals(getString(R.string.dog_spinner))) {
                         mPetType = Tier.TierItem.TYPE_DOG;
                         //set default image for dog
-                        mPetImageView.setImageResource(R.drawable.ic_dog_default);
+                        if (bitmap == null) {
+                            mPetImageView.setImageResource(R.drawable.ic_dog_default);
+                        } else {
+                            mPetImageView.setImageBitmap(bitmap);
+                        }
                     } else if (selection.equals(getString(R.string.cat_spinner))) {
                         mPetType = Tier.TierItem.TYPE_CAT;
                         //set default image for cat
-                        mPetImageView.setImageResource(R.drawable.ic_cat_default);
+                        if (bitmap == null) {
+                            mPetImageView.setImageResource(R.drawable.ic_cat_default);
+                        } else {
+                            mPetImageView.setImageBitmap(bitmap);
+                        }
                     } else {
                         mPetType = Tier.TierItem.TYPE_PARROT;
                         //set default image for parrot
-                        mPetImageView.setImageResource(R.drawable.ic_parrot_default);
+                        if (bitmap == null) {
+                            mPetImageView.setImageResource(R.drawable.ic_parrot_default);
+                        } else {
+                            mPetImageView.setImageBitmap(bitmap);
+                        }
                     }
                 }
             }
@@ -245,21 +268,16 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
             }
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            mPetImageView.setImageBitmap(imageBitmap);
-        }
-    }
-
-    String mCurrentPhotoPath;
-
+    /**
+     * Create imageFile
+     * @return
+     * @throws IOException
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -276,6 +294,16 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         return image;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            bitmap = (Bitmap) extras.get("data");
+            mPetImageView.setImageBitmap(bitmap);
+
+        }
+    }
+
     private void deletePet() {
         getContentResolver().delete(petUri, null, null);
     }
@@ -286,14 +314,18 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     private void savePet() {
         ContentValues values = new ContentValues();
         //Convert image to bitmap
-        Bitmap bitmap;
-        if (mPetType == Tier.TierItem.TYPE_DOG) {
-            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_dog_default);
-        } else if (mPetType == Tier.TierItem.TYPE_CAT) {
-            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_cat_default);
-        } else {
-            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_parrot_default);
+
+        if (bitmap == null) {
+            if (mPetType == Tier.TierItem.TYPE_DOG) {
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_dog_default);
+
+            } else if (mPetType == Tier.TierItem.TYPE_CAT) {
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_cat_default);
+            } else {
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_parrot_default);
+            }
         }
+
         ByteArrayOutputStream bos=new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
         byte[] image =bos.toByteArray();
@@ -346,7 +378,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             int petType = data.getInt(data.getColumnIndex(Tier.TierItem.COLUMN_PET_TYPE));
             //get Image from Database
             byte[] image = data.getBlob(data.getColumnIndex(Tier.TierItem.COLUMN_PICTURE));
-            Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+            bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
 
             //populate the values into the TextViews
             mNameEditText.setText(petName);
@@ -389,5 +421,6 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         mWeightEditText.setText("");
         mGenderSpinner.setSelection(0);
         mPetTypeSpinner.setSelection(0);
+        mPetImageView.setImageBitmap(null);
     }
 }
