@@ -93,11 +93,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 if (checked) {
                     //add into hashmap and change the background color to gray
                     itemMap.put(id, position);
-                    petListView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorItemSelected));
+                    petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemSelected));
                 } else {
                     //remove from hashmap and change the background color to white
+                    petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemSelected));
                     itemMap.remove(id);
-                    petListView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorItemSelected));
+
                 }
             }
 
@@ -136,14 +137,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             for (Long id : itemMap.keySet()) {
+                                if (petListView.getChildAt(itemMap.get(id)) == null) {
+                                    continue;
+                                }
                                 String whereDeleteID = Tier.TierItem._ID + "=" + id;
-                                int result = getContentResolver().delete(Tier.TierItem.CONTENT_URI, whereDeleteID, null);
                                 petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemNotSelected));
+                                int result = getContentResolver().delete(Tier.TierItem.CONTENT_URI, whereDeleteID, null);
                                 if (result == -1) {
                                     Log.i("From MainActivity", "Delete failed for id " + id);
                                 }
                             }
                             onDestroyActionMode(mode);
+                            itemMap.clear();
+                            checkedCount = 0;
                             mode.finish();
                         }
                     });
@@ -161,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     adb.show();
                 }
                 return true;
+
             }
 
             @Override
@@ -168,9 +175,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 if (itemMap.isEmpty()) {
                     return;
                 }
-                for (Integer position : itemMap.values()) {
+                for (Long id : itemMap.keySet()) {
                     //set the color back to unselected
-                    petListView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorItemNotSelected));
+                    if (petListView.getChildAt(itemMap.get(id)) == null) {
+                        continue;
+                    }
+                    petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemNotSelected));
+
                 }
             }
 

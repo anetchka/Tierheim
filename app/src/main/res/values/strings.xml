@@ -29,10 +29,13 @@
     <string name="save_item">Tier speichern</string>
 
     <!-- Title for a picture item in a menu -->
-    <string name="change_picture">Profilbild wechseln</string>
+    <string name="change_picture">Bild fotografieren</string>
 
     <!-- Title for spinner choice dog -->
     <string name="dog_spinner">Hund</string>
+
+    <!-- Title to choose a picture from the galery -->
+    <string name="galery_picture">Bild aus der Galerie</string>
 
     <!-- If the weight EditText is empty -->
     <string name="empty_weight">Gewicht wurde nicht eingegeben</string>

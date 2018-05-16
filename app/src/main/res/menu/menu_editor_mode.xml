@@ -11,4 +11,9 @@
         android:id="@+id/changePicture"
         android:title="@string/change_picture"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/galeryPicture"
+        android:title="@string/galery_picture"
+        app:showAsAction="never" />
 </menu>

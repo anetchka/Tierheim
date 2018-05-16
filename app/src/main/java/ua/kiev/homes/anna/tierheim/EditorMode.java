@@ -9,6 +9,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -38,12 +39,22 @@ import java.util.Date;
 
 import ua.kiev.homes.anna.tierheim.database.Tier;
 
-public class EditorMode extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class EditorMode extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
      * EditText field to enter the pet's name
      */
     private EditText mNameEditText;
+
+    /**
+     * Request Code for camera
+     */
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    /**
+     * Request code for gallery image
+     */
+    private static final int PICK_IMAGE_REQUEST = 2;
 
     /**
      * a path where the picture is saved on the phone
@@ -175,7 +186,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                mPetType= Tier.TierItem.TYPE_DOG;
+                mPetType = Tier.TierItem.TYPE_DOG;
             }
         });
     }
@@ -215,6 +226,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
 
     /**
      * Inflate Menu into the layout
+     *
      * @param menu
      * @return true or false
      */
@@ -237,6 +249,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
 
     /**
      * Depending on the item selected do different actions
+     *
      * @param item the selected item from the spinner
      * @return
      */
@@ -251,11 +264,22 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             case R.id.changePicture:
                 changeProfilePicture();
                 return true;
+
+            case R.id.galeryPicture:
+                chosePictureFromGalery();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private void chosePictureFromGalery() {
+        Intent intent = new Intent();
+// Show only images, no videos or anything else
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+// Always show the chooser (if there are multiple options available)
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
 
     /**
      * Start camera Intent
@@ -279,13 +303,13 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-
             }
         }
     }
 
     /**
      * Create imageFile
+     *
      * @return
      * @throws IOException
      */
@@ -307,12 +331,54 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             bitmap = (Bitmap) extras.get("data");
+            //set the width and height
+            bitmap = getResizedBitmap(bitmap, mPetImageView.getWidth(), mPetImageView.getHeight());
             mPetImageView.setImageBitmap(bitmap);
 
         }
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri uri = data.getData();
+
+            try {
+                //the bitmap from the gallery which is normally bigger than the size of the view
+                Bitmap bigSizedBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                bitmap = getResizedBitmap(bigSizedBitmap, mPetImageView.getWidth(), mPetImageView.getHeight());
+                // Log.d(TAG, String.valueOf(bitmap));
+                mPetImageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    /**
+     *
+     * @param bm A {@link Bitmap} bitmap
+     * @param newWidth the desired width of the picture
+     * @param newHeight the desired height of the bitmap
+     * @return a {@link Bitmap} resized bitmap
+     */
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+
+        // create a matrix for the manipulation
+        Matrix matrix = new Matrix();
+
+        // resize the bit map
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // recreate the new Bitmap
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+
+        return resizedBitmap;
     }
 
     private void deletePet() {
@@ -337,9 +403,9 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             }
         }
 
-        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
-        byte[] image =bos.toByteArray();
+        byte[] image = bos.toByteArray();
 
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
