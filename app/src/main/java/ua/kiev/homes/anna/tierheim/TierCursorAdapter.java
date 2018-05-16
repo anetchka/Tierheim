@@ -61,25 +61,7 @@ public class TierCursorAdapter extends CursorAdapter {
 
         String petName = cursor.getString(cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_NAME));
         String breed = cursor.getString(cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_BREED));;
-        /**
-        cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_TYPE);
-        int petTypeAsInteger = cursor.getInt(cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_TYPE));
-        String petTypeAsString = "";
 
-        switch (petTypeAsInteger) {
-            case 0:
-                petTypeAsString = myContext.getResources().getString(R.string.dog_spinner);
-                break;
-            case 1:
-                petTypeAsString = myContext.getResources().getString(R.string.cat_spinner);
-                break;
-            case 2:
-                petTypeAsString = myContext.getResources().getString(R.string.parrot_spinner);
-                break;
-            default:
-                petTypeAsString = myContext.getResources().getString(R.string.dog_spinner);
-        }
-**/
         nameTV.setText(petName);
         petBreed.setText(breed);
         petPictureIV.setImageBitmap(bitmap);

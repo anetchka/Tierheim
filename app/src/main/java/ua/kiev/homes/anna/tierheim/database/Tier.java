@@ -72,6 +72,11 @@ public class Tier {
         public final static String COLUMN_PICTURE = "picture";
 
         /**
+         * A flag to know if the picture is chosen from the spinner or the gallery
+         */
+        public final static String COLUMN_DEFAULT_PICTURE = "defaultPicture";
+
+        /**
          * Gender of the pet.
          *
          * The only possible values are {@link #GENDER_UNKNOWN}, {@link #GENDER_MALE},
@@ -104,6 +109,12 @@ public class Tier {
          * Type: INTEGER
          */
         public final static String COLUMN_PET_WEIGHT = "weight";
+
+        /**
+         * Possible values for the default picture
+         */
+        public static final int DEFAULT = 1;
+        public static final int NOT_DEFAULT = 0;
 
         /**
          * Possible values for the gender of the pet.

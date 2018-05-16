@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-
         // Find the ListView which will be populated with the pet data
         petListView = (ListView) findViewById(R.id.list);
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.

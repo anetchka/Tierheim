@@ -47,6 +47,11 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     private EditText mNameEditText;
 
     /**
+     * A flag for a default picture
+     */
+    private boolean isDefaultPicture = true;
+
+    /**
      * Request Code for camera
      */
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -125,10 +130,11 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
                 finish();
             }
         });
-
+        //spinner for gender
         setUpGenderSpinner();
-
+        //spinner for pet type
         setUpPetTypeSpinner();
+
         Intent intent = getIntent();
         //get uri from the intent
         petUri = intent.getData();
@@ -159,7 +165,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
                     if (selection.equals(getString(R.string.dog_spinner))) {
                         mPetType = Tier.TierItem.TYPE_DOG;
                         //set default image for dog
-                        if (bitmap == null) {
+                        if (bitmap == null || isDefaultPicture) {
                             mPetImageView.setImageResource(R.drawable.ic_dog_default);
                         } else {
                             mPetImageView.setImageBitmap(bitmap);
@@ -167,7 +173,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
                     } else if (selection.equals(getString(R.string.cat_spinner))) {
                         mPetType = Tier.TierItem.TYPE_CAT;
                         //set default image for cat
-                        if (bitmap == null) {
+                        if (bitmap == null || isDefaultPicture) {
                             mPetImageView.setImageResource(R.drawable.ic_cat_default);
                         } else {
                             mPetImageView.setImageBitmap(bitmap);
@@ -175,7 +181,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
                     } else {
                         mPetType = Tier.TierItem.TYPE_PARROT;
                         //set default image for parrot
-                        if (bitmap == null) {
+                        if (bitmap == null || isDefaultPicture) {
                             mPetImageView.setImageResource(R.drawable.ic_parrot_default);
                         } else {
                             mPetImageView.setImageBitmap(bitmap);
@@ -195,13 +201,11 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     private void setUpGenderSpinner() {
         // Creating adapter for spinner
         ArrayAdapter dataAdapter = ArrayAdapter.createFromResource(this, R.array.array_gender, android.R.layout.simple_spinner_dropdown_item);
-
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // attaching data adapter to spinner
         mGenderSpinner.setAdapter(dataAdapter);
-
         mGenderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -264,7 +268,6 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             case R.id.changePicture:
                 changeProfilePicture();
                 return true;
-
             case R.id.galeryPicture:
                 chosePictureFromGalery();
                 return true;
@@ -274,10 +277,10 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
 
     private void chosePictureFromGalery() {
         Intent intent = new Intent();
-// Show only images, no videos or anything else
+        // Show only images, no videos or anything else
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-// Always show the chooser (if there are multiple options available)
+        // Always show the chooser (if there are multiple options available)
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
@@ -331,18 +334,16 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             bitmap = (Bitmap) extras.get("data");
             //set the width and height
             bitmap = getResizedBitmap(bitmap, mPetImageView.getWidth(), mPetImageView.getHeight());
             mPetImageView.setImageBitmap(bitmap);
-
         }
+
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
-
             try {
                 //the bitmap from the gallery which is normally bigger than the size of the view
                 Bitmap bigSizedBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
@@ -352,32 +353,27 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
+        isDefaultPicture = false;
     }
 
     /**
-     *
-     * @param bm A {@link Bitmap} bitmap
-     * @param newWidth the desired width of the picture
+     * @param bm        A {@link Bitmap} bitmap
+     * @param newWidth  the desired width of the picture
      * @param newHeight the desired height of the bitmap
      * @return a {@link Bitmap} resized bitmap
      */
-    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+    private Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();
         int height = bm.getHeight();
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
-
         // create a matrix for the manipulation
         Matrix matrix = new Matrix();
-
         // resize the bit map
         matrix.postScale(scaleWidth, scaleHeight);
-
         // recreate the new Bitmap
         Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
-
         return resizedBitmap;
     }
 
@@ -391,11 +387,9 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     private void savePet() {
         ContentValues values = new ContentValues();
         //Convert image to bitmap
-
-        if (bitmap == null) {
+        if (bitmap == null || isDefaultPicture) {
             if (mPetType == Tier.TierItem.TYPE_DOG) {
                 bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_dog_default);
-
             } else if (mPetType == Tier.TierItem.TYPE_CAT) {
                 bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_cat_default);
             } else {
@@ -419,6 +413,13 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             Toast.makeText(this, getString(R.string.empty_weight), Toast.LENGTH_SHORT).show();
         }
 
+        int defaultAsInt;
+        if (isDefaultPicture) {
+            defaultAsInt = 1;
+        } else {
+            defaultAsInt = 0;
+        }
+
         // Create a ContentValues object where column names are the keys,
         // and pet attributes from the editor are the values.
         values.put(Tier.TierItem.COLUMN_PET_NAME, nameString);
@@ -427,6 +428,9 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         values.put(Tier.TierItem.COLUMN_PET_WEIGHT, weight);
         values.put(Tier.TierItem.COLUMN_PET_TYPE, mPetType);
         values.put(Tier.TierItem.COLUMN_PICTURE, image);
+        values.put(Tier.TierItem.COLUMN_DEFAULT_PICTURE, defaultAsInt);
+
+        //
 
         //if insert pet
         if (petUri == null) {
@@ -437,6 +441,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         }
     }
 
+    //if you add a new column to a table, the value should also be added here
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {
@@ -446,7 +451,8 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
                 Tier.TierItem.COLUMN_PET_GENDER,
                 Tier.TierItem.COLUMN_PET_WEIGHT,
                 Tier.TierItem.COLUMN_PET_TYPE,
-                Tier.TierItem.COLUMN_PICTURE};
+                Tier.TierItem.COLUMN_PICTURE,
+                Tier.TierItem.COLUMN_DEFAULT_PICTURE};
         return new CursorLoader(this, ContentUris.withAppendedId(Tier.TierItem.CONTENT_URI, ContentUris.parseId(petUri)), projection, null, null, null);
     }
 
@@ -462,6 +468,12 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             //get Image from Database
             byte[] image = data.getBlob(data.getColumnIndex(Tier.TierItem.COLUMN_PICTURE));
             bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+            int defaultAsInt = data.getInt(data.getColumnIndexOrThrow(Tier.TierItem.COLUMN_DEFAULT_PICTURE));
+            if (defaultAsInt == 0) {
+                isDefaultPicture = false;
+            } else {
+                isDefaultPicture = true;
+            }
 
             //populate the values into the TextViews
             mNameEditText.setText(petName);

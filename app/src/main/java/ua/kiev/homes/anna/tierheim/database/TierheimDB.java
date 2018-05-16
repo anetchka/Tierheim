@@ -33,15 +33,18 @@ public class TierheimDB extends SQLiteOpenHelper {
                 + Tier.TierItem.COLUMN_PICTURE + " BLOB,  "
                 + Tier.TierItem.COLUMN_PET_BREED + " TEXT, "
                 + Tier.TierItem.COLUMN_PET_GENDER + " INTEGER NOT NULL, "
-                + Tier.TierItem.COLUMN_PET_WEIGHT + " INTEGER NOT NULL DEFAULT 0);";
+                + Tier.TierItem.COLUMN_PET_WEIGHT + " INTEGER NOT NULL DEFAULT 0, "
+                + Tier.TierItem.COLUMN_DEFAULT_PICTURE + " INTEGER);";
 
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_PETS_TABLE);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS " + Tier.TierItem.TABLE_NAME);
+        onCreate(db);
     }
 
     @Override

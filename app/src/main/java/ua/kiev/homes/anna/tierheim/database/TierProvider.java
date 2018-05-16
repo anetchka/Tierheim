@@ -87,7 +87,9 @@ public class TierProvider extends ContentProvider {
         //check if
 
         Long insertedID = db.insertOrThrow(Tier.TierItem.TABLE_NAME, null, values);
-
+        if (insertedID == -1) {
+           ;
+        }
         //notify all listeners that data has been changed
         getContext().getContentResolver().notifyChange(uri, null);
         return ContentUris.withAppendedId(uri, insertedID);
