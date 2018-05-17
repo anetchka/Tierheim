@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         petListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-
                 checkedCount = petListView.getCheckedItemCount();
                 //if more than one item selected set the appropriate title
                 if (checkedCount > 1) {
@@ -95,9 +94,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemSelected));
                 } else {
                     //remove from hashmap and change the background color to white
-                    petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemSelected));
+                    petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemNotSelected));
                     itemMap.remove(id);
-
                 }
             }
 
@@ -124,21 +122,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public boolean onActionItemClicked(final ActionMode mode, final MenuItem item) {
                 //if the user chooses "Tier Löschen" from menu item
                 if (item.getItemId() == R.id.delete) {
-
                     //create Alert Dialog
                     AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
-
-                    adb.setTitle("Items löschen?");
-
+                    adb.setTitle(getString(R.string.alert_delete));
                     adb.setIcon(android.R.drawable.ic_dialog_alert);
-
                     //if "OK" button is clicked, delete the items
                     adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             for (Long id : itemMap.keySet()) {
-                                if (petListView.getChildAt(itemMap.get(id)) == null) {
-                                    continue;
-                                }
+                             //   if (petListView.getChildAt(itemMap.get(id)) == null) {
+                               //     continue;
+                                //}
                                 String whereDeleteID = Tier.TierItem._ID + "=" + id;
                                 petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemNotSelected));
                                 int result = getContentResolver().delete(Tier.TierItem.CONTENT_URI, whereDeleteID, null);
@@ -176,9 +170,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 }
                 for (Long id : itemMap.keySet()) {
                     //set the color back to unselected
-                    if (petListView.getChildAt(itemMap.get(id)) == null) {
-                        continue;
-                    }
+                   // if (petListView.getChildAt(itemMap.get(id)) == null) {
+                     //   continue;
+                    //}
                     petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemNotSelected));
 
                 }

@@ -1,9 +1,11 @@
 package ua.kiev.homes.anna.tierheim;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -19,6 +21,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,7 +45,7 @@ import ua.kiev.homes.anna.tierheim.database.Tier;
 public class EditorMode extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
-     * EditText field to enter the pet's name
+     * An {@link EditText}EditText field to enter the pet's name
      */
     private EditText mNameEditText;
 
@@ -62,11 +65,6 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     private static final int PICK_IMAGE_REQUEST = 2;
 
     /**
-     * a path where the picture is saved on the phone
-     */
-    private String mCurrentPhotoPath;
-
-    /**
      * Image for the pet
      */
     private ImageView mPetImageView;
@@ -76,6 +74,9 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
      */
     private Bitmap bitmap;
 
+    /**
+     * a {@link Uri} Uri for a pet
+     */
     private Uri petUri;
 
     /**
@@ -263,7 +264,6 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         switch (selectedItem) {
             case R.id.delete:
                 deletePet();
-                finish();
                 return true;
             case R.id.changePicture:
                 changeProfilePicture();
@@ -328,7 +328,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
+        image.getAbsolutePath();
         return image;
     }
 
@@ -378,7 +378,23 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     }
 
     private void deletePet() {
-        getContentResolver().delete(petUri, null, null);
+        //create Alert Dialog
+        AlertDialog.Builder adb = new AlertDialog.Builder(EditorMode.this);
+        adb.setTitle(getString(R.string.alert_delete));
+        adb.setIcon(android.R.drawable.ic_dialog_alert);
+        //if "OK" button is clicked, delete the items
+        adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                getContentResolver().delete(petUri, null, null);
+                finish();
+            }
+        });
+        //if "Cancel" button is clicked
+        adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        adb.show();
     }
 
     /**
@@ -412,14 +428,13 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         } catch (NumberFormatException e) {
             Toast.makeText(this, getString(R.string.empty_weight), Toast.LENGTH_SHORT).show();
         }
-
+        //get values for the defaultPicture column
         int defaultAsInt;
         if (isDefaultPicture) {
             defaultAsInt = 1;
         } else {
             defaultAsInt = 0;
         }
-
         // Create a ContentValues object where column names are the keys,
         // and pet attributes from the editor are the values.
         values.put(Tier.TierItem.COLUMN_PET_NAME, nameString);
@@ -429,8 +444,6 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         values.put(Tier.TierItem.COLUMN_PET_TYPE, mPetType);
         values.put(Tier.TierItem.COLUMN_PICTURE, image);
         values.put(Tier.TierItem.COLUMN_DEFAULT_PICTURE, defaultAsInt);
-
-        //
 
         //if insert pet
         if (petUri == null) {
@@ -474,7 +487,6 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             } else {
                 isDefaultPicture = true;
             }
-
             //populate the values into the TextViews
             mNameEditText.setText(petName);
             mBreedEditText.setText(petBreed);
