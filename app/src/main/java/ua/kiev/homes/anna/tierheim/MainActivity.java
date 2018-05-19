@@ -23,7 +23,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import ua.kiev.homes.anna.tierheim.database.Tier;
 
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private int checkedCount;
 
     //a HashMap for ids and positions of chosen items
-    private HashMap<Long, Integer> itemMap = new HashMap<Long, Integer>();
+    private List<Long> itemList = new ArrayList<Long>();
 
     //List view where the pets are populated
     private ListView petListView;
@@ -90,15 +92,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 }
                 if (checked) {
                     //add into hashmap and change the background color to gray
-                    itemMap.put(id, position);
-                    int count = petListView.getChildCount();
-                    petListView.getCheckedItemPosition();
-                    int po = itemMap.get(id);
-                    petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemSelected));
+                    itemList.add(id);
+
                 } else {
                     //remove from hashmap and change the background color to white
-                    petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemNotSelected));
-                    itemMap.remove(id);
+                    itemList.remove(id);
                 }
             }
 
@@ -132,9 +130,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     //if "OK" button is clicked, delete the items
                     adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            for (Long id : itemMap.keySet()) {
+                            for (Long id : itemList) {
                                 String whereDeleteID = Tier.TierItem._ID + "=" + id;
-                                petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemNotSelected));
                                 int result = getContentResolver().delete(Tier.TierItem.CONTENT_URI, whereDeleteID, null);
                                 if (result == -1) {
                                     Log.i("From MainActivity", "Delete failed for id " + id);
@@ -143,7 +140,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             onDestroyActionMode(mode);
                         }
                     });
-
                     //if "Cancel" button is clicked
                     adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -158,14 +154,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                if (itemMap.isEmpty()) {
+                if (itemList.isEmpty()) {
                     return;
                 }
-                for (Long id : itemMap.keySet()) {
-                    //set the color back to unselected
-                    petListView.getChildAt(itemMap.get(id)).setBackgroundColor(getResources().getColor(R.color.colorItemNotSelected));
-                }
-                itemMap.clear();
+                itemList.clear();
                 checkedCount = 0;
                 mode.finish();
             }
