@@ -13,7 +13,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -21,7 +20,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -63,6 +61,11 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
      * Request code for gallery image
      */
     private static final int PICK_IMAGE_REQUEST = 2;
+
+    /**
+     * default weight
+     */
+    private boolean defaultWeight = true;
 
     /**
      * Image for the pet
@@ -128,7 +131,9 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             public void onClick(View v) {
                 //save pet when "Speichern" button is clicked
                 savePet();
-                finish();
+                if (!defaultWeight) {
+                    finish();
+                }
             }
         });
         //spinner for gender
@@ -425,8 +430,19 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         int weight = 0;
         try {
             weight = Integer.parseInt(weightString);
+            defaultWeight = false;
         } catch (NumberFormatException e) {
-            Toast.makeText(this, getString(R.string.empty_weight), Toast.LENGTH_SHORT).show();
+            defaultWeight = true;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(getString(R.string.missing_name))
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
         }
         //get values for the defaultPicture column
         int defaultAsInt;

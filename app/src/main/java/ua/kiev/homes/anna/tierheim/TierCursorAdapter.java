@@ -56,7 +56,7 @@ public class TierCursorAdapter extends CursorAdapter {
         TextView petBreed = (TextView) view.findViewById(R.id.breedTVInListItem);
         //retrieve image from database
         ImageView petPictureIV = (ImageView) view.findViewById(R.id.imageIdInListItem);
-        byte[] image = cursor.getBlob(cursor.getColumnIndex(Tier.TierItem.COLUMN_PICTURE));
+        byte[] image = cursor.getBlob(cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PICTURE));
         Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
 
         String petName = cursor.getString(cursor.getColumnIndexOrThrow(Tier.TierItem.COLUMN_PET_NAME));

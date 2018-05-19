@@ -25,6 +25,9 @@
     <!-- Title for Alert DIalog when deleting a pet -->
     <string name="alert_delete">Tier Löschen?</string>
 
+    <!-- Title for Alert DIalog when the weight is not given -->
+    <string name="missing_name">Gewicht wurde nicht eingegeben</string>
+
     <!-- Title for a delete item in a menu -->
     <string name="edit_pet">Tier Bearbeiten</string>
 
