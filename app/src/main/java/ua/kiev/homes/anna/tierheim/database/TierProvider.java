@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.widget.Toast;
 
 public class TierProvider extends ContentProvider {
 
@@ -26,6 +28,9 @@ public class TierProvider extends ContentProvider {
 
     //DbHeleper
     private TierheimDB dbHelper;
+
+    /** Tag for the log messages */
+    public static final String LOG_TAG = TierProvider.class.getSimpleName();
 
     @Override
     public boolean onCreate() {
@@ -53,22 +58,18 @@ public class TierProvider extends ContentProvider {
         //compare numbers
         int match = sUriMatcher.match(uri);
         switch (match) {
-
             case ALL_PETS:
                 cursor = db.query(Tier.TierItem.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
-
             case ONE_PET:
                 selection = Tier.TierItem._ID + "=?";
                 //get ID from the URI
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 cursor = db.query(Tier.TierItem.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
-
             default:
                 throw new IllegalArgumentException("Cannot query with the uri" + uri);
         }
-
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
@@ -82,17 +83,44 @@ public class TierProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        int match = sUriMatcher.match(uri);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        //check if
-
-        Long insertedID = db.insertOrThrow(Tier.TierItem.TABLE_NAME, null, values);
-        if (insertedID == -1) {
-           ;
+        if (sUriMatcher.match(uri) == ALL_PETS) {
+            // Check that the name is not null
+            String name = values.getAsString(Tier.TierItem.COLUMN_PET_NAME);
+            if (name.isEmpty() || name == null) {
+                Toast.makeText(getContext(), "Tier braucht einen Namen", Toast.LENGTH_LONG).show();
+                return null;
+            }
+            //Check weight
+            Integer weight = values.getAsInteger(Tier.TierItem.COLUMN_PET_WEIGHT);
+            if (weight == null && weight < 0) {
+                Toast.makeText(getContext(), "Das Gewicht muss >= 0 sein", Toast.LENGTH_LONG).show();
+                return null;
+            }
+            //Check for pet type
+            Integer type = values.getAsInteger(Tier.TierItem.COLUMN_PET_TYPE);
+            if (type == null || !Tier.TierItem.isValidtType(type)) {
+                Toast.makeText(getContext(), "Geben Sie den Typ vom Tier", Toast.LENGTH_LONG).show();
+                return null;
+            }
+            //Check for gender
+            Integer gender = values.getAsInteger(Tier.TierItem.COLUMN_PET_GENDER);
+            if (gender == null || !Tier.TierItem.isValidGender(gender)) {
+                Toast.makeText(getContext(), "Geben Sie das Geschlecht an", Toast.LENGTH_LONG).show();
+                return null;
+            }
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            //check if the insertion was successful
+            Long insertedID = db.insertOrThrow(Tier.TierItem.TABLE_NAME, null, values);
+            if (insertedID == -1) {
+                Log.e(LOG_TAG, "Failed insertion");
+                return null;
+            }
+            //notify all listeners that data has been changed
+            getContext().getContentResolver().notifyChange(uri, null);
+            return ContentUris.withAppendedId(uri, insertedID);
+        } else {
+            throw new IllegalArgumentException("Cannot insert with the uri" + uri);
         }
-        //notify all listeners that data has been changed
-        getContext().getContentResolver().notifyChange(uri, null);
-        return ContentUris.withAppendedId(uri, insertedID);
     }
 
     @Override
@@ -122,6 +150,48 @@ public class TierProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
+        // If there are no values to update, then don't try to update the database
+        if (values.size() == 0) {
+            return -1;
+        }
+        // If the {@link PetEntry#COLUMN_PET_NAME} key is present,
+        // check that the name value is not null.
+        if (values.containsKey(Tier.TierItem.COLUMN_PET_NAME)) {
+            String name = values.getAsString(Tier.TierItem.COLUMN_PET_NAME);
+            if (name == null || name.isEmpty()) {
+                Toast.makeText(getContext(), "Tier braucht einen Namen", Toast.LENGTH_LONG).show();
+                return -1;
+            }
+        }
+
+        // If the {@link PetEntry#COLUMN_PET_WEIGHT} key is present,
+        // check that the weight value is valid.
+        if (values.containsKey(Tier.TierItem.COLUMN_PET_WEIGHT)) {
+            // Check that the weight is greater than or equal to 0 kg
+            Integer weight = values.getAsInteger(Tier.TierItem.COLUMN_PET_WEIGHT);
+            if (weight != null && weight < 0) {
+                Toast.makeText(getContext(), "Das Gewicht muss >= 0 sein", Toast.LENGTH_LONG).show();
+                return -1;
+            }
+        }
+
+        if (values.containsKey(Tier.TierItem.COLUMN_PET_TYPE)) {
+            Integer type = values.getAsInteger(Tier.TierItem.COLUMN_PET_TYPE);
+            if (type == null && !Tier.TierItem.isValidGender(type)) {
+                Toast.makeText(getContext(), "Geben Sie das Geschlecht an", Toast.LENGTH_LONG).show();
+                return -1;
+            }
+        }
+
+        // If the {@link PetEntry#COLUMN_PET_GENDER} key is present,
+        // check that the gender value is valid.
+        if (values.containsKey(Tier.TierItem.COLUMN_PET_GENDER)) {
+            Integer gender = values.getAsInteger(Tier.TierItem.COLUMN_PET_GENDER);
+            if (gender == null || !Tier.TierItem.isValidGender(gender)) {
+                throw new IllegalArgumentException("Pet requires valid gender");
+            }
+        }
+
         int numberUpdatedRows = -1;
         //get writable DB
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -136,7 +206,7 @@ public class TierProvider extends ContentProvider {
             selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
             numberUpdatedRows = db.update(Tier.TierItem.TABLE_NAME, values, selection, selectionArgs);
         } else {
-            throw new IllegalArgumentException("Deletion is not supported for " + uri);
+            throw new IllegalArgumentException("Update is not supported for " + uri);
         }
         //if deletion was successful then notify content resolver
         if (numberUpdatedRows != -1) {

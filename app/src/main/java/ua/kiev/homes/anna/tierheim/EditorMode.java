@@ -390,7 +390,16 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         //if "OK" button is clicked, delete the items
         adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                getContentResolver().delete(petUri, null, null);
+                // Defines a variable to contain the number of rows deleted
+                int mRowsDeleted = 0;
+
+                mRowsDeleted = getContentResolver().delete(petUri, null, null);
+
+                if (mRowsDeleted == 0) {
+                    Toast.makeText(getApplication(), "Tier wurde nicht erfolgreich gelöscht", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplication(), "Tier wurde erfolgreich gelöscht", Toast.LENGTH_SHORT).show();
+                }
                 finish();
             }
         });
@@ -433,16 +442,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             defaultWeight = false;
         } catch (NumberFormatException e) {
             defaultWeight = true;
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(getString(R.string.missing_name))
-                    .setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            finish();
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
+            finish();
         }
         //get values for the defaultPicture column
         int defaultAsInt;
@@ -461,12 +461,26 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         values.put(Tier.TierItem.COLUMN_PICTURE, image);
         values.put(Tier.TierItem.COLUMN_DEFAULT_PICTURE, defaultAsInt);
 
-        //if insert pet
+        // insert pet
         if (petUri == null) {
+
             Uri uriForInsertedPet = getContentResolver().insert(Tier.TierItem.CONTENT_URI, values);
+            // Show a toast message depending on whether or not the insertion was successful
+            if (uriForInsertedPet == null) {
+                // If the row ID is -1, then there was an error with insertion.
+                Toast.makeText(getApplication(), "Tier wurde nicht erfolgreich eingefügt", Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the insertion was successful
+                Toast.makeText(getApplication(), "Tier wurde  erfolgreich eingefügt", Toast.LENGTH_SHORT).show();
+            }
         } else {
             int rowsUpdated = -1;
             rowsUpdated = getContentResolver().update(petUri, values, null, null);
+            if (rowsUpdated == -1) {
+                Toast.makeText(getApplication(), "Tier wurde nicht aktualisiert", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplication(), "Tier wurde aktualisiert", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

@@ -37,7 +37,7 @@ public class Tier {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PETS;
 
-        //the complete Uri with the table name at the end: content://com.example.android.pets/pets
+        //the complete Uri with the table name at the end: content://ua.kiev.homes.anna.tierheim/tiere
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PETS);
 
         /** Name of database table for pets */

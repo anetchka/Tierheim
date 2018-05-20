@@ -19,7 +19,6 @@ public class TierheimDB extends SQLiteOpenHelper {
 
     public TierheimDB(Context context)
     {
-
         super(context, DB_NAME, null, DB_VERSION);
         myContext = context;
     }
