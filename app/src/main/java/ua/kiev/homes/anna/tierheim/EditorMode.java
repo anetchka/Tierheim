@@ -343,7 +343,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             Bundle extras = data.getExtras();
             bitmap = (Bitmap) extras.get("data");
             //set the width and height
-            bitmap = getResizedBitmap(bitmap, mPetImageView.getWidth(), mPetImageView.getHeight());
+            bitmap = getResizedBitmap(bitmap, 720, 720);
             mPetImageView.setImageBitmap(bitmap);
         }
 
@@ -351,9 +351,8 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             Uri uri = data.getData();
             try {
                 //the bitmap from the gallery which is normally bigger than the size of the view
-                Bitmap bigSizedBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                bitmap = getResizedBitmap(bigSizedBitmap, mPetImageView.getWidth(), mPetImageView.getHeight());
-                // Log.d(TAG, String.valueOf(bitmap));
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                bitmap = getResizedBitmap(bitmap, 720, 720);
                 mPetImageView.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -463,22 +462,16 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
 
         // insert pet
         if (petUri == null) {
-
             Uri uriForInsertedPet = getContentResolver().insert(Tier.TierItem.CONTENT_URI, values);
             // Show a toast message depending on whether or not the insertion was successful
-            if (uriForInsertedPet == null) {
+            if (uriForInsertedPet != null) {
                 // If the row ID is -1, then there was an error with insertion.
-                Toast.makeText(getApplication(), "Tier wurde nicht erfolgreich eingefügt", Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the insertion was successful
-                Toast.makeText(getApplication(), "Tier wurde  erfolgreich eingefügt", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), "Tier wurde erfolgreich eingefügt", Toast.LENGTH_SHORT).show();
             }
         } else {
             int rowsUpdated = -1;
             rowsUpdated = getContentResolver().update(petUri, values, null, null);
-            if (rowsUpdated == -1) {
-                Toast.makeText(getApplication(), "Tier wurde nicht aktualisiert", Toast.LENGTH_SHORT).show();
-            } else {
+            if (rowsUpdated != -1) {
                 Toast.makeText(getApplication(), "Tier wurde aktualisiert", Toast.LENGTH_SHORT).show();
             }
         }

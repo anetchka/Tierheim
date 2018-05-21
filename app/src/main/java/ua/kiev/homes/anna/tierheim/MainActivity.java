@@ -133,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             for (Long id : itemList) {
                                 String whereDeleteID = Tier.TierItem._ID + "=" + id;
                                 int result = getContentResolver().delete(Tier.TierItem.CONTENT_URI, whereDeleteID, null);
-
                                 if (result == 0) {
                                     Toast.makeText(getApplication(), "Tier wurde nicht erfolgreich gelöscht", Toast.LENGTH_SHORT).show();
                                 } else {

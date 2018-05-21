@@ -74,6 +74,7 @@ public class TierProvider extends ContentProvider {
         return cursor;
     }
 
+
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
@@ -111,12 +112,10 @@ public class TierProvider extends ContentProvider {
             SQLiteDatabase db = dbHelper.getWritableDatabase();
             //check if the insertion was successful
             Long insertedID = db.insertOrThrow(Tier.TierItem.TABLE_NAME, null, values);
-            if (insertedID == -1) {
-                Log.e(LOG_TAG, "Failed insertion");
-                return null;
+            if (insertedID != -1) {
+                //notify all listeners that data has been changed
+                getContext().getContentResolver().notifyChange(uri, null);
             }
-            //notify all listeners that data has been changed
-            getContext().getContentResolver().notifyChange(uri, null);
             return ContentUris.withAppendedId(uri, insertedID);
         } else {
             throw new IllegalArgumentException("Cannot insert with the uri" + uri);
