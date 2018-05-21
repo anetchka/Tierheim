@@ -68,11 +68,6 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     private static final int PICK_IMAGE_REQUEST = 2;
 
     /**
-     * default weight
-     */
-    private boolean defaultWeight = true;
-
-    /**
      * Request code for full image
      */
     private static final int FULL_IMAGE_REQUEST = 3;
@@ -140,8 +135,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             @Override
             public void onClick(View v) {
                 //save pet when "Speichern" button is clicked
-                savePet();
-                if (!defaultWeight) {
+                if (savePet()) {
                     finish();
                 }
             }
@@ -439,7 +433,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     /**
      * A method to save a pet
      */
-    private void savePet() {
+    private boolean savePet() {
         ContentValues values = new ContentValues();
         //Convert image to bitmap
         if (bitmap == null || isDefaultPicture) {
@@ -464,10 +458,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         int weight = 0;
         try {
             weight = Integer.parseInt(weightString);
-            defaultWeight = false;
         } catch (NumberFormatException e) {
-            defaultWeight = true;
-            finish();
         }
         //get values for the defaultPicture column
         int defaultAsInt;
@@ -493,14 +484,17 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             if (uriForInsertedPet != null) {
                 // If the row ID is -1, then there was an error with insertion.
                 Toast.makeText(getApplication(), "Tier wurde erfolgreich eingefügt", Toast.LENGTH_SHORT).show();
+                return true;
             }
         } else {
             int rowsUpdated = -1;
             rowsUpdated = getContentResolver().update(petUri, values, null, null);
             if (rowsUpdated != -1) {
                 Toast.makeText(getApplication(), "Tier wurde aktualisiert", Toast.LENGTH_SHORT).show();
+                return true;
             }
         }
+        return false;
     }
 
     //if you add a new column to a table, the value should also be added here
