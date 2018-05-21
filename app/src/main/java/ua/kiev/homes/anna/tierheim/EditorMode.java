@@ -53,6 +53,11 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     private boolean isDefaultPicture = true;
 
     /**
+     * Boolean for the imageView
+     */
+    private boolean isImageFitToScreen = true;
+
+    /**
      * Request Code for camera
      */
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -68,12 +73,17 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     private boolean defaultWeight = true;
 
     /**
+     * Request code for full image
+     */
+    private static final int FULL_IMAGE_REQUEST = 3;
+
+    /**
      * Image for the pet
      */
     private ImageView mPetImageView;
 
     /**
-     * a {@link Bitmap} Bitmap for the picture
+     * a {@link Bitmap} for the picture
      */
     private Bitmap bitmap;
 
@@ -112,6 +122,8 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
      */
     private Spinner mPetTypeSpinner;
 
+    private File capturedImageUri;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,9 +135,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         mWeightEditText = (EditText) findViewById(R.id.weightEditText);
         mGenderSpinner = (Spinner) findViewById(R.id.genderSpinner);
         mPetTypeSpinner = (Spinner) findViewById(R.id.petTypeSpinner);
-        mPetImageView = (ImageView) findViewById(R.id.defaultPetImageView);
-
-        Button savePet = (Button) findViewById(R.id.save_pet_button);
+        final Button savePet = (Button) findViewById(R.id.save_pet_button);
         savePet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,6 +146,22 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
                 }
             }
         });
+        mPetImageView = (ImageView) findViewById(R.id.defaultPetImageView);
+        mPetImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isImageFitToScreen) {
+                    isImageFitToScreen = false;
+                    Intent intent = new Intent(EditorMode.this, FullScreenImage.class);
+                    intent.setData(petUri);
+                    startActivity(intent);
+                }else{
+                    isImageFitToScreen=true;
+
+                }
+            }
+        });
+
         //spinner for gender
         setUpGenderSpinner();
         //spinner for pet type
@@ -297,18 +323,17 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
-            File photoFile = null;
             try {
-                photoFile = createImageFile();
+                capturedImageUri = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
 
             }
             // Continue only if the File was successfully created
-            if (photoFile != null) {
+            if (capturedImageUri != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "ua.kiev.homes.anna.tierheim.fileprovider",
-                        photoFile);
+                        capturedImageUri);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
@@ -341,7 +366,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            bitmap = (Bitmap) extras.get("data");
+            bitmap = BitmapFactory.decodeFile(capturedImageUri.getAbsolutePath());
             //set the width and height
             bitmap = getResizedBitmap(bitmap, 720, 720);
             mPetImageView.setImageBitmap(bitmap);
@@ -372,10 +397,11 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         int height = bm.getHeight();
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
+        float finalScale = Math.min(scaleWidth, scaleHeight);
         // create a matrix for the manipulation
         Matrix matrix = new Matrix();
         // resize the bit map
-        matrix.postScale(scaleWidth, scaleHeight);
+        matrix.postScale(finalScale, finalScale);
         // recreate the new Bitmap
         Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
         return resizedBitmap;

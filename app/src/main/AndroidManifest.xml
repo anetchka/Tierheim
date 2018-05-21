@@ -27,6 +27,12 @@
                 android:value=".MainActivity" />
         </activity>
 
+        <activity android:name=".FullScreenImage">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".EditorMode" />
+        </activity>
+
         <provider
             android:name=".database.TierProvider"
             android:authorities="ua.kiev.homes.anna.tierheim"
