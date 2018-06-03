@@ -11,9 +11,9 @@ import ua.kiev.homes.anna.tierheim.R;
 
 public class StartScreen extends AppCompatActivity {
 
-    private String workerValue = "worker";
-    private String userValue = "user";
-    private static final String EXTRA_PERSON = "ua.kiev.homes.anna.tierheim.mainScreen.EXTRA_PERSON";
+    public static final String WORKER_VALUE = "worker";
+    public static final String USER_VALUE = "user";
+    public static final String EXTRA_PERSON = "ua.kiev.homes.anna.tierheim.mainScreen.EXTRA_PERSON";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class StartScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StartScreen.this, LogInScreen.class);
-                intent.putExtra(EXTRA_PERSON, workerValue);
+                intent.putExtra(EXTRA_PERSON, WORKER_VALUE);
                 startActivity(intent);
             }
         });
@@ -36,7 +36,7 @@ public class StartScreen extends AppCompatActivity {
            @Override
            public void onClick(View v) {
                Intent intent = new Intent(StartScreen.this, LogInScreen.class);
-               intent.putExtra(EXTRA_PERSON, userValue);
+               intent.putExtra(EXTRA_PERSON, USER_VALUE);
                startActivity(intent);
            }
        });
