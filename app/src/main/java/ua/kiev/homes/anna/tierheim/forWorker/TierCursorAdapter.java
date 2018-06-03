@@ -1,4 +1,4 @@
-package ua.kiev.homes.anna.tierheim;
+package ua.kiev.homes.anna.tierheim.forWorker;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,6 +11,7 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ua.kiev.homes.anna.tierheim.R;
 import ua.kiev.homes.anna.tierheim.database.Tier;
 
 public class TierCursorAdapter extends CursorAdapter {

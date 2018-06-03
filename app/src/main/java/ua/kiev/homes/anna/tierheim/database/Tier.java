@@ -111,12 +111,6 @@ public class Tier {
         public final static String COLUMN_PET_WEIGHT = "weight";
 
         /**
-         * Possible values for the default picture
-         */
-        public static final int DEFAULT = 1;
-        public static final int NOT_DEFAULT = 0;
-
-        /**
          * Possible values for the gender of the pet.
          */
         public static final int GENDER_UNKNOWN = 0;

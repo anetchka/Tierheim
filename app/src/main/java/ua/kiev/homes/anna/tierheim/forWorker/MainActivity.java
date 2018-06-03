@@ -1,4 +1,4 @@
-package ua.kiev.homes.anna.tierheim;
+package ua.kiev.homes.anna.tierheim.forWorker;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,14 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
+import ua.kiev.homes.anna.tierheim.R;
 import ua.kiev.homes.anna.tierheim.database.Tier;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {

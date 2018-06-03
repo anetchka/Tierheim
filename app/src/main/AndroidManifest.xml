@@ -15,25 +15,37 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+
+        <activity android:name=".mainScreen.StartScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".forWorker.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".mainScreen.StartScreen" />
+        </activity>
 
         <activity
-            android:name=".EditorMode"
+            android:name=".forWorker.EditorMode"
             android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".forWorker.MainActivity" />
         </activity>
 
-        <activity android:name=".FullScreenImage">
+        <activity android:name=".mainScreen.LogInScreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".EditorMode" />
+                android:value=".mainScreen.StartScreen" />
+        </activity>
+
+        <activity android:name=".forWorker.FullScreenImage">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".forWorker.EditorMode" />
         </activity>
 
         <provider

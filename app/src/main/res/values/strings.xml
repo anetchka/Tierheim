@@ -61,4 +61,13 @@
     <!-- Title for spinner choice unknown gender -->
     <string name="unknown_spinner">Unbekannt</string>
 
+    <!-- Title for Worker Log iN -->
+    <string name="as_worker">Mitarbeiter Bereich</string>
+
+    <!-- Title for User Log in -->
+    <string name="as_user">Benutzer Bereich</string>
+
+    <!-- Title for Uas who you want lo log in -->
+    <string name="which_area">Ich möchte zu diesen Bereich gehen </string>
+
 </resources>

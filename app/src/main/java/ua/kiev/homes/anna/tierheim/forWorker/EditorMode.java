@@ -1,4 +1,4 @@
-package ua.kiev.homes.anna.tierheim;
+package ua.kiev.homes.anna.tierheim.forWorker;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import ua.kiev.homes.anna.tierheim.R;
 import ua.kiev.homes.anna.tierheim.database.Tier;
 
 public class EditorMode extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -46,6 +47,16 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
      * An {@link EditText}EditText field to enter the pet's name
      */
     private EditText mNameEditText;
+
+    /**
+     * Width for the Image
+     */
+    private static final int NEW_WIDTH = 720;
+
+    /**
+     * Height for the Image
+     */
+    private static final int NEW_HEIGHT = 720;
 
     /**
      * A flag for a default picture
@@ -343,7 +354,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = "jpeg_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -362,7 +373,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             Bundle extras = data.getExtras();
             bitmap = BitmapFactory.decodeFile(capturedImageUri.getAbsolutePath());
             //set the width and height
-            bitmap = getResizedBitmap(bitmap, 720, 720);
+            bitmap = getResizedBitmap(bitmap, NEW_WIDTH, NEW_HEIGHT);
             mPetImageView.setImageBitmap(bitmap);
         }
 
@@ -371,7 +382,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
             try {
                 //the bitmap from the gallery which is normally bigger than the size of the view
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                bitmap = getResizedBitmap(bitmap, 720, 720);
+                bitmap = getResizedBitmap(bitmap, NEW_WIDTH, NEW_HEIGHT);
                 mPetImageView.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();

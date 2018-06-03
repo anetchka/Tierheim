@@ -1,4 +1,4 @@
-package ua.kiev.homes.anna.tierheim;
+package ua.kiev.homes.anna.tierheim.forWorker;
 
 import android.app.LoaderManager;
 import android.content.ContentUris;
@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import ua.kiev.homes.anna.tierheim.database.Tier;
+import ua.kiev.homes.anna.tierheim.R;
 
 public class FullScreenImage extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
