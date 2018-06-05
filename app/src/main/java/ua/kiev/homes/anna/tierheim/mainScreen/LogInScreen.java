@@ -10,12 +10,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import ua.kiev.homes.anna.tierheim.R;
+import ua.kiev.homes.anna.tierheim.forUser.UserRegistration;
 import ua.kiev.homes.anna.tierheim.forWorker.MainActivity;
 
 public class LogInScreen extends AppCompatActivity {
 
     public static final String USERNAME = "Admin";
     public static final String PASSWORD = "Tierheim.de";
+
+    public static final String USER_NAME_KEY = "ua.kiev.homes.anna.tierheim.mainScreen.USER_NAME";
+    public static final String USER_PASSWORD_KEY = "ua.kiev.homes.anna.tierheim.mainScreen.USER_PASSWORD";
 
     private EditText usernameET;
     private EditText passwordET;
@@ -50,11 +54,24 @@ public class LogInScreen extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                if (extra.equals(StartScreen.USER_VALUE)) {
+                    signUpUser();
+                } else {
+             //       signUpWorker();
+                }
             }
         });
 
+
     }
+
+    private void signUpUser() {
+        Intent intent = new Intent(LogInScreen.this, UserRegistration.class);
+        intent.putExtra(USER_NAME_KEY, usernameET.getText().toString().trim());
+        intent.putExtra(USER_PASSWORD_KEY, passwordET.getText().toString().trim());
+        startActivity(intent);
+    }
+
 
     private void checkUserLogIns() {
     }

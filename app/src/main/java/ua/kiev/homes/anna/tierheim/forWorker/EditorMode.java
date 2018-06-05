@@ -79,11 +79,6 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
     private static final int PICK_IMAGE_REQUEST = 2;
 
     /**
-     * Request code for full image
-     */
-    private static final int FULL_IMAGE_REQUEST = 3;
-
-    /**
      * Image for the pet
      */
     private ImageView mPetImageView;

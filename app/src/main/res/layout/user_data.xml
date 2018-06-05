@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/GridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:context=".forWorker.MainActivity">
+
+
+        <TextView
+            android:id="@+id/userNameTextView"
+            style="@style/TextViewEditModeStyle"
+            android:layout_row="1"
+            android:text="Name" />
+
+        <EditText
+            android:id="@+id/nameEditText"
+            style="@style/EditTextEditModeStyle"
+            android:layout_row="1"
+            android:hint="Ihr Name" />
+
+        <TextView
+            android:id="@+id/suurnameTextView"
+            style="@style/TextViewEditModeStyle"
+            android:layout_row="2"
+            android:text="Nachname" />
+
+        <EditText
+            android:id="@+id/surnameEditText"
+            style="@style/EditTextEditModeStyle"
+            android:layout_row="2"
+            android:hint="Ihr Nachname" />
+
+        <TextView
+            android:id="@+id/ageTextView"
+            style="@style/TextViewEditModeStyle"
+            android:layout_row="3"
+            android:text="Alter" />
+
+        <EditText
+            android:id="@+id/ageEditText"
+            style="@style/EditTextEditModeStyle"
+            android:layout_row="3"
+            android:hint="Ihr Alter"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/desiredPetTypeTextView"
+            style="@style/TextViewEditModeStyle"
+            android:layout_row="4"
+            android:text="Gewünschter Tier" />
+
+        <Spinner
+            android:id="@+id/desiredPetTypeSpinner"
+            style="@style/SpinnerEditModeStyle"
+            android:layout_row="4" />
+
+        <TextView
+            android:id="@+id/adressTextView"
+            style="@style/TextViewEditModeStyle"
+            android:layout_row="5"
+            android:text="Addresse" />
+
+        <EditText
+            android:id="@+id/adressEditText"
+            style="@style/EditTextEditModeStyle"
+            android:layout_row="5"
+            android:hint="Ihre Adresse" />
+
+        <TextView
+            android:id="@+id/emailAdressTextView"
+            style="@style/TextViewEditModeStyle"
+            android:layout_row="6"
+            android:text="E-Mail" />
+
+        <EditText
+            android:id="@+id/emailAdressEditText"
+            style="@style/EditTextEditModeStyle"
+            android:layout_row="6"
+            android:hint="Ihre E-Mail" />
+    </GridLayout>
+
+    <Button
+        android:id="@+id/save_user_button"
+        style="@style/ImageAndButtonEditorModeStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Profil Speichern"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</android.support.constraint.ConstraintLayout>

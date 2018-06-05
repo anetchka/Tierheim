@@ -42,6 +42,12 @@
                 android:value=".mainScreen.StartScreen" />
         </activity>
 
+        <activity android:name=".forUser.UserRegistration">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".mainScreen.LogInScreen" />
+        </activity>
+
         <activity android:name=".forWorker.FullScreenImage">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -51,6 +57,11 @@
         <provider
             android:name=".database.TierProvider"
             android:authorities="ua.kiev.homes.anna.tierheim"
+            android:exported="false"></provider>
+
+        <provider
+            android:name=".userDatabase.UserProvider"
+            android:authorities="ua.kiev.homes.anna.users"
             android:exported="false"></provider>
 
         <provider
