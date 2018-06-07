@@ -54,6 +54,12 @@
                 android:value=".forWorker.EditorMode" />
         </activity>
 
+        <activity android:name=".forUser.UserMainScreen">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".forUser.UserRegistration" />
+        </activity>
+
         <provider
             android:name=".database.TierProvider"
             android:authorities="ua.kiev.homes.anna.tierheim"

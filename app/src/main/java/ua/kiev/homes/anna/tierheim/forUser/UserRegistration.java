@@ -18,7 +18,6 @@ import android.widget.Toast;
 import ua.kiev.homes.anna.tierheim.R;
 import ua.kiev.homes.anna.tierheim.database.Tier;
 import ua.kiev.homes.anna.tierheim.mainScreen.LogInScreen;
-import ua.kiev.homes.anna.tierheim.mainScreen.StartScreen;
 import ua.kiev.homes.anna.tierheim.userDatabase.User;
 
 public class UserRegistration extends AppCompatActivity {
@@ -29,6 +28,8 @@ public class UserRegistration extends AppCompatActivity {
     private EditText emailET;
     private String username;
     private String password;
+
+    public static final String PREFERRED_PET_TYPE = "ua.kiev.homes.anna.tierheim.userregistration.PREFERRED_PET_TYPE";
 
     private Spinner mPetTypeSpinner;
     /**
@@ -75,6 +76,9 @@ public class UserRegistration extends AppCompatActivity {
         if (insertedUserUri != null) {
             // If the row ID is -1, then there was an error with insertion.
             Toast.makeText(getApplication(), "Tier wurde erfolgreich eingefügt", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(UserRegistration.this, UserMainScreen.class);
+            intent.putExtra(PREFERRED_PET_TYPE, String.valueOf(mPetType));
+            startActivity(intent);
         }
     }
 
