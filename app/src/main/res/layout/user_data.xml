@@ -6,104 +6,98 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/defaultPetImageView"
-        style="@style/ImageAndButtonEditorModeStyle"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="8dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_dog_default" />
 
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/GridLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".forWorker.MainActivity">
 
 
         <TextView
-            android:id="@+id/nameTextView"
+            android:id="@+id/userNameTextView"
             style="@style/TextViewEditModeStyle"
             android:layout_row="1"
-            android:text="@string/nameTextView" />
+            android:text="Name" />
 
         <EditText
             android:id="@+id/nameEditText"
             style="@style/EditTextEditModeStyle"
             android:layout_row="1"
-            android:hint="@string/nameTextView" />
+            android:hint="Ihr Name" />
 
         <TextView
-            android:id="@+id/breedTextView"
+            android:id="@+id/suurnameTextView"
             style="@style/TextViewEditModeStyle"
             android:layout_row="2"
-            android:text="@string/breedTextView" />
+            android:text="Nachname" />
 
         <EditText
-            android:id="@+id/breedEditText"
+            android:id="@+id/surnameEditText"
             style="@style/EditTextEditModeStyle"
             android:layout_row="2"
-            android:hint="@string/breedTextView" />
+            android:hint="Ihr Nachname" />
 
         <TextView
-            android:id="@+id/weightTextView"
+            android:id="@+id/ageTextView"
             style="@style/TextViewEditModeStyle"
             android:layout_row="3"
-            android:text="@string/weightTextView" />
+            android:text="Alter" />
 
         <EditText
-            android:id="@+id/weightEditText"
+            android:id="@+id/ageEditText"
             style="@style/EditTextEditModeStyle"
             android:layout_row="3"
-            android:hint="Gewicht"
+            android:hint="Ihr Alter"
             android:inputType="number" />
 
         <TextView
-            android:id="@+id/petTypeTextView"
+            android:id="@+id/desiredPetTypeTextView"
             style="@style/TextViewEditModeStyle"
             android:layout_row="4"
-            android:text="@string/petTypeTextView" />
+            android:text="Gewünschter Tier" />
 
         <Spinner
-            android:id="@+id/petTypeSpinner"
+            android:id="@+id/desiredPetTypeSpinner"
             style="@style/SpinnerEditModeStyle"
             android:layout_row="4" />
 
-        <Spinner
-            android:id="@+id/genderSpinner"
-            style="@style/SpinnerEditModeStyle"
-            android:layout_row="5" />
+        <TextView
+            android:id="@+id/adressTextView"
+            style="@style/TextViewEditModeStyle"
+            android:layout_row="5"
+            android:text="Addresse" />
 
+        <EditText
+            android:id="@+id/adressEditText"
+            style="@style/EditTextEditModeStyle"
+            android:layout_row="5"
+            android:hint="Ihre Adresse" />
+
+        <TextView
+            android:id="@+id/emailAdressTextView"
+            style="@style/TextViewEditModeStyle"
+            android:layout_row="6"
+            android:text="E-Mail" />
+
+        <EditText
+            android:id="@+id/emailAdressEditText"
+            style="@style/EditTextEditModeStyle"
+            android:layout_row="6"
+            android:hint="Ihre E-Mail" />
     </GridLayout>
 
     <Button
-        android:id="@+id/save_pet_button"
+        android:id="@+id/save_user_button"
         style="@style/ImageAndButtonEditorModeStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="@string/save_item"
+        android:text="Profil Speichern"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/contact_petshelter_button"
-        style="@style/ImageAndButtonEditorModeStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="Tierheim kontaktieren"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:visibility="invisible"/>
 </android.support.constraint.ConstraintLayout>

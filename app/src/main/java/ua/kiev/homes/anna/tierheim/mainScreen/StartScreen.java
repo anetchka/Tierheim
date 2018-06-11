@@ -1,6 +1,8 @@
 package ua.kiev.homes.anna.tierheim.mainScreen;
 
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +31,7 @@ public class StartScreen extends AppCompatActivity {
                 Intent intent = new Intent(StartScreen.this, LogInScreen.class);
                 intent.putExtra(EXTRA_PERSON, WORKER_VALUE);
                 startActivity(intent);
+
             }
         });
 
@@ -41,4 +44,5 @@ public class StartScreen extends AppCompatActivity {
            }
        });
     }
+
 }

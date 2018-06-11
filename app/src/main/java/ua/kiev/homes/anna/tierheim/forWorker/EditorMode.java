@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -40,6 +41,8 @@ import java.util.Date;
 
 import ua.kiev.homes.anna.tierheim.R;
 import ua.kiev.homes.anna.tierheim.database.Tier;
+import ua.kiev.homes.anna.tierheim.forUser.UserMainScreen;
+import ua.kiev.homes.anna.tierheim.mainScreen.StartScreen;
 
 public class EditorMode extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -77,11 +80,6 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
      * Request code for gallery image
      */
     private static final int PICK_IMAGE_REQUEST = 2;
-
-    /**
-     * Request code for full image
-     */
-    private static final int FULL_IMAGE_REQUEST = 3;
 
     /**
      * Image for the pet
@@ -130,10 +128,14 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
 
     private File capturedImageUri;
 
+    private String extra;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editor_mode);
+
+        Intent intent = getIntent();
 
         // Find all relevant views that we will need to read user input from
         mNameEditText = (EditText) findViewById(R.id.nameEditText);
@@ -141,7 +143,9 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         mWeightEditText = (EditText) findViewById(R.id.weightEditText);
         mGenderSpinner = (Spinner) findViewById(R.id.genderSpinner);
         mPetTypeSpinner = (Spinner) findViewById(R.id.petTypeSpinner);
+
         final Button savePet = (Button) findViewById(R.id.save_pet_button);
+
         savePet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,13 +159,13 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         mPetImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isImageFitToScreen) {
+                if (isImageFitToScreen) {
                     isImageFitToScreen = false;
                     Intent intent = new Intent(EditorMode.this, FullScreenImage.class);
                     intent.setData(petUri);
                     startActivity(intent);
-                }else{
-                    isImageFitToScreen=true;
+                } else {
+                    isImageFitToScreen = true;
 
                 }
             }
@@ -172,7 +176,7 @@ public class EditorMode extends AppCompatActivity implements LoaderManager.Loade
         //spinner for pet type
         setUpPetTypeSpinner();
 
-        Intent intent = getIntent();
+        //   Intent intent = getIntent();
         //get uri from the intent
         petUri = intent.getData();
         if (petUri == null) {

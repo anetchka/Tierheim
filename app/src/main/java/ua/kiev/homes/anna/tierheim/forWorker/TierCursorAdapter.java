@@ -27,6 +27,7 @@ public class TierCursorAdapter extends CursorAdapter {
         super(context, c, 0 /* flags */);
     }
 
+
     /**
      * Makes a new blank list item view. No data is set (or bound) to the views yet.
      *

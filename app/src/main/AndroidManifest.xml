@@ -36,10 +36,18 @@
                 android:value=".forWorker.MainActivity" />
         </activity>
 
-        <activity android:name=".mainScreen.LogInScreen">
+        <activity android:name=".mainScreen.LogInScreen"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".mainScreen.StartScreen" />
+        </activity>
+
+        <activity android:name=".forUser.UserRegistration"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".mainScreen.LogInScreen" />
         </activity>
 
         <activity android:name=".forWorker.FullScreenImage">
@@ -48,9 +56,30 @@
                 android:value=".forWorker.EditorMode" />
         </activity>
 
+        <activity android:name=".forUser.UserMainScreen"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".forUser.UserRegistration" />
+        </activity>
+
+        <activity android:name=".forUser.ViewPet"
+            android:parentActivityName=".forUser.UserMainScreen"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".forUser.UserMainScreen" />
+        </activity>
+
+
         <provider
             android:name=".database.TierProvider"
             android:authorities="ua.kiev.homes.anna.tierheim"
+            android:exported="false"></provider>
+
+        <provider
+            android:name=".userDatabase.UserProvider"
+            android:authorities="ua.kiev.homes.anna.userProvider"
             android:exported="false"></provider>
 
         <provider
