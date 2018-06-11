@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ua.kiev.homes.anna.tierheim.R;
-import ua.kiev.homes.anna.tierheim.database.Tier;
 import ua.kiev.homes.anna.tierheim.forUser.UserRegistration;
 import ua.kiev.homes.anna.tierheim.forWorker.MainActivity;
 import ua.kiev.homes.anna.tierheim.userDatabase.User;
@@ -25,9 +24,11 @@ public class LogInScreen extends AppCompatActivity {
     public static final String USERNAME = "Admin";
     public static final String PASSWORD = "Tierheim.de";
 
+
     public static final String USER_NAME_KEY = "ua.kiev.homes.anna.tierheim.loginscreen.USER_NAME";
     public static final String USER_PASSWORD_KEY = "ua.kiev.homes.anna.tierheim.loginscreen.USER_PASSWORD";
     public static final String UNIQUE_ID = "ua.kiev.homes.anna.tierheim.loginscreen.uniqueID";
+
 
     private EditText usernameET;
     private EditText passwordET;
@@ -80,6 +81,7 @@ public class LogInScreen extends AppCompatActivity {
 
     }
 
+
     //when a new user wants to register
     private void signUpUser() {
         username = usernameET.getText().toString();
@@ -105,7 +107,8 @@ public class LogInScreen extends AppCompatActivity {
 
     }
 
-    //when an existing user wants to sign in
+
+
     private void checkUserLogIns() {
         username = usernameET.getText().toString();
         password = passwordET.getText().toString();

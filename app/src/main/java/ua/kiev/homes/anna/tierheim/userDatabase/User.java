@@ -7,9 +7,9 @@ import android.provider.BaseColumns;
 public class User {
 
     //For Uri content authority part
+
     public static final String CONTENT_AUTHORITY = "ua.kiev.homes.anna.userProvider";
 
-    //Consists of "content://ua.kiev.homes.anna.users"
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     //table name
@@ -38,6 +38,7 @@ public class User {
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_USER;
 
         //the complete Uri with the table name at the end: content://ua.kiev.homes.anna.userProviders/users
+
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_USER);
 
         /** Name of database table for pets */

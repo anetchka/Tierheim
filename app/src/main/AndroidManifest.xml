@@ -43,6 +43,7 @@
                 android:value=".mainScreen.StartScreen" />
         </activity>
 
+
         <activity android:name=".forUser.UserRegistration"
             android:launchMode="singleTop">
             <meta-data

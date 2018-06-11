@@ -104,4 +104,5 @@ public class UserMainScreen extends AppCompatActivity implements LoaderManager.L
     public void onLoaderReset(Loader<Cursor> loader) {
         tierAdapter.swapCursor(null);
     }
+
 }
