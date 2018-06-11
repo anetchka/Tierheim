@@ -28,18 +28,21 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".forWorker.MainActivity">
 
-
         <TextView
             android:id="@+id/nameTextView"
             style="@style/TextViewEditModeStyle"
             android:layout_row="1"
             android:text="@string/nameTextView" />
 
-        <EditText
-            android:id="@+id/nameEditText"
-            style="@style/EditTextEditModeStyle"
+        <TextView
+            android:id="@+id/nameTextViewRight"
+            android:layout_column="2"
             android:layout_row="1"
-            android:hint="@string/nameTextView" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_gravity="fill"
+            android:layout_marginTop="16dp"
+            android:text="@string/nameTextView" />
+
 
         <TextView
             android:id="@+id/breedTextView"
@@ -47,11 +50,15 @@
             android:layout_row="2"
             android:text="@string/breedTextView" />
 
-        <EditText
-            android:id="@+id/breedEditText"
-            style="@style/EditTextEditModeStyle"
+
+        <TextView
+            android:id="@+id/breedEditTextRight"
             android:layout_row="2"
-            android:hint="@string/breedTextView" />
+            android:layout_column="2"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_gravity="fill"
+            android:layout_marginTop="16dp"
+            android:text="@string/breedTextView" />
 
         <TextView
             android:id="@+id/weightTextView"
@@ -59,12 +66,14 @@
             android:layout_row="3"
             android:text="@string/weightTextView" />
 
-        <EditText
-            android:id="@+id/weightEditText"
-            style="@style/EditTextEditModeStyle"
+        <TextView
+            android:id="@+id/weightTextViewRight"
             android:layout_row="3"
-            android:hint="Gewicht"
-            android:inputType="number" />
+            android:layout_column="2"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_gravity="fill"
+            android:layout_marginTop="16dp"
+            android:text="@string/breedTextView" />
 
         <TextView
             android:id="@+id/petTypeTextView"
@@ -72,28 +81,34 @@
             android:layout_row="4"
             android:text="@string/petTypeTextView" />
 
-        <Spinner
-            android:id="@+id/petTypeSpinner"
-            style="@style/SpinnerEditModeStyle"
-            android:layout_row="4" />
 
-        <Spinner
-            android:id="@+id/genderSpinner"
-            style="@style/SpinnerEditModeStyle"
-            android:layout_row="5" />
+        <TextView
+            android:id="@+id/petTypeSTextViewRight"
+            android:layout_row="4"
+            android:layout_column="2"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_gravity="fill"
+            android:layout_marginTop="16dp"
+            android:text="@string/petTypeTextView"/>
+
+        <TextView
+            android:id="@+id/genderTextView"
+            style="@style/TextViewEditModeStyle"
+            android:layout_row="5"
+            android:text="@string/genderTextView" />
+
+
+        <TextView
+            android:id="@+id/genderTextViewRight"
+            android:layout_row="5"
+            android:layout_column="2"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_gravity="fill"
+            android:layout_marginTop="16dp"
+            android:text="@string/genderTextView" />
 
     </GridLayout>
 
-    <Button
-        android:id="@+id/save_pet_button"
-        style="@style/ImageAndButtonEditorModeStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="@string/save_item"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/contact_petshelter_button"
@@ -104,6 +119,5 @@
         android:text="Tierheim kontaktieren"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:visibility="invisible"/>
+        app:layout_constraintStart_toStartOf="parent"/>
 </android.support.constraint.ConstraintLayout>

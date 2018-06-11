@@ -36,13 +36,15 @@
                 android:value=".forWorker.MainActivity" />
         </activity>
 
-        <activity android:name=".mainScreen.LogInScreen">
+        <activity android:name=".mainScreen.LogInScreen"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".mainScreen.StartScreen" />
         </activity>
 
-        <activity android:name=".forUser.UserRegistration">
+        <activity android:name=".forUser.UserRegistration"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".mainScreen.LogInScreen" />
@@ -54,10 +56,19 @@
                 android:value=".forWorker.EditorMode" />
         </activity>
 
-        <activity android:name=".forUser.UserMainScreen">
+        <activity android:name=".forUser.UserMainScreen"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".forUser.UserRegistration" />
+        </activity>
+
+        <activity android:name=".forUser.ViewPet"
+            android:parentActivityName=".forUser.UserMainScreen"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".forUser.UserMainScreen" />
         </activity>
 
         <provider

@@ -20,11 +20,6 @@ import ua.kiev.homes.anna.tierheim.R;
 public class FullScreenImage extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
-     * A flag for a default picture
-     */
-    private boolean isDefaultPicture = true;
-
-    /**
      * Image for the pet
      */
     private ImageView mPetImageView;
@@ -60,13 +55,7 @@ public class FullScreenImage extends AppCompatActivity implements LoaderManager.
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {
                 Tier.TierItem._ID,
-                Tier.TierItem.COLUMN_PET_NAME,
-                Tier.TierItem.COLUMN_PET_BREED,
-                Tier.TierItem.COLUMN_PET_GENDER,
-                Tier.TierItem.COLUMN_PET_WEIGHT,
-                Tier.TierItem.COLUMN_PET_TYPE,
-                Tier.TierItem.COLUMN_PICTURE,
-                Tier.TierItem.COLUMN_DEFAULT_PICTURE};
+                Tier.TierItem.COLUMN_PICTURE};
         return new CursorLoader(this, ContentUris.withAppendedId(Tier.TierItem.CONTENT_URI, ContentUris.parseId(petUri)), projection, null, null, null);
 
     }
@@ -77,12 +66,6 @@ public class FullScreenImage extends AppCompatActivity implements LoaderManager.
             //get Image from Database
             byte[] image = data.getBlob(data.getColumnIndex(Tier.TierItem.COLUMN_PICTURE));
             bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-            int defaultAsInt = data.getInt(data.getColumnIndexOrThrow(Tier.TierItem.COLUMN_DEFAULT_PICTURE));
-            if (defaultAsInt == 0) {
-                isDefaultPicture = false;
-            } else {
-                isDefaultPicture = true;
-            }
             mPetImageView.setImageBitmap(bitmap);
         }
 
